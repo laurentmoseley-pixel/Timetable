@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI and privacy: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html" aria-current="page">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="the-ai-assistant-privacy-summary-for-the-dpo">The AI assistant: privacy summary for the DPO</h1><p>This summary supports the school&#39;s data protection impact assessment (DPIA) for the optional AI
+assistant. It adds to <a href="data-protection.html">DATA-PROTECTION.md</a>. The AI assistant is off unless the school turns it on.</p>
+<h2 id="what-it-does">What it does</h2><p>When someone who can change everything uses an AI action, the app sends a description of the
+timetable&#39;s structure to an AI service the school has chosen. The service returns a suggestion,
+which the app checks. Nothing changes until a person approves it.</p>
+<h2 id="what-is-sent-and-what-never-is">What is sent, and what never is</h2><p>Each action declares the data it needs, from this list. The gateway builds nothing else.</p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>What goes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>school</td>
+<td>Day names, period numbers and times</td>
+</tr>
+<tr>
+<td>subjects</td>
+<td>Subject codes; standard subject names (Maths, English…) keep their names, anything else is a code</td>
+</tr>
+<tr>
+<td>staff</td>
+<td>Staff as codes (S1…), with role types from the app&#39;s fixed list, subjects they teach, working days, weekly limits</td>
+</tr>
+<tr>
+<td>groups</td>
+<td>Groups as codes (G1…), with size, adult ratio, team (codes) and weekly plan</td>
+</tr>
+<tr>
+<td>rooms</td>
+<td>Rooms as codes (R1…), with capacity and standard room type</td>
+</tr>
+<tr>
+<td>lessons</td>
+<td>Each lesson: group, day, period, subject, staff, room (all codes), length, locked</td>
+</tr>
+<tr>
+<td>problems</td>
+<td>Rule problems from the Checks, in codes</td>
+</tr>
+<tr>
+<td>absences</td>
+<td>Who is away on one day and which periods (codes, no reasons)</td>
+</tr>
+<tr>
+<td>pupils</td>
+<td>Pupils as codes (P1…) and their groups, only for actions that truly need it</td>
+</tr>
+<tr>
+<td>cover</td>
+<td>For one day&#39;s absence: each lesson needing cover (period, group, subject, as codes), who is free for it (codes), how much cover each has done this term and today, and the daily cover limit</td>
+</tr>
+<tr>
+<td>columns</td>
+<td>For a spreadsheet the app cannot read: the column headings and the kind of values in each (&quot;a day name&quot;, &quot;a number&quot;, &quot;short codes&quot;), never the values themselves</td>
+</tr>
+</tbody></table>
+<p><strong>Never sent:</strong> names, email addresses, the school&#39;s own staff codes and pupil numbers, group and
+room names, lesson titles, absence reasons, notes, notices, cover work, the change log, or any other
+free text.</p>
+<p><strong>Checks:</strong> the codes are shuffled afresh for every action, so they cannot be matched between
+actions. (When the app sends a proposal back to the AI to put right, up to five times, those retries
+use the same codes, so the AI can understand what went wrong.) Before anything is sent, the whole request is scanned for every name, email, code and note
+in the timetable. If any is found, nothing is sent and the attempt is logged as blocked. Editors can
+choose to see each request in full before it goes; this is on by default.</p>
+<h2 id="what-each-action-sends">What each action sends</h2><table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Data scopes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Fix all clashes</td>
+<td>school, subjects, staff, groups, rooms, lessons, problems</td>
+</tr>
+<tr>
+<td>Timetable this class</td>
+<td>school, subjects, staff, groups, rooms, lessons</td>
+</tr>
+<tr>
+<td>Find cover</td>
+<td>cover, staff, subjects, groups</td>
+</tr>
+<tr>
+<td>Balance this week</td>
+<td>school, subjects, staff, groups, rooms, lessons</td>
+</tr>
+<tr>
+<td>Explain this placement</td>
+<td>school, subjects, staff, groups, rooms, lessons, problems</td>
+</tr>
+<tr>
+<td>Run a what-if</td>
+<td>school, subjects, staff, groups, rooms, lessons, and the question, with any person, group or room in it replaced by its code (typed names are refused)</td>
+</tr>
+<tr>
+<td>Map my spreadsheet</td>
+<td>columns only</td>
+</tr>
+</tbody></table>
+<p>No official action sends pupil-level data.</p>
+<p><strong>Custom actions</strong> (made by the school in Setup, AI actions) use the same gateway and the same list of
+data; they cannot add anything to it. The builder warns when an action would send pupils (as codes),
+so the school can record it here. A prompt containing a whole name, staff code or email cannot be
+saved, and prompts are checked again on every request. <strong>Practice runs</strong> send a made-up school (the
+demo), never the school&#39;s own data. <strong>Action packs</strong> (files for sharing actions) hold templates only:
+no timetable data, no history and no names. Every request and answer, and every retry, is in the AI
+log.</p>
+<h2 id="is-it-still-personal-data">Is it still personal data?</h2><p>Yes, potentially. Codes replace names (pseudonymisation), but the school holds the key to the codes
+during the request, and patterns such as a staff member&#39;s working days could relate to a person.
+Under UK GDPR, pseudonymised data is still personal data. The risk is low, because:</p>
+<ul>
+<li>nothing sent names or directly identifies anyone, and codes change every time</li>
+<li>by default no pupil-level data is sent: only group sizes</li>
+<li>only editors can use it, and every request is logged</li>
+</ul>
+<p><strong>Lawful basis:</strong> usually public task or legitimate interests (the school&#39;s timetabling and staffing
+duties), as for the timetable itself. No special category data is sent.</p>
+<h2 id="the-service-the-school-chooses">The service the school chooses</h2><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Where data goes</th>
+<th>Notes for the DPIA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Local model (Ollama)</td>
+<td>A computer in school</td>
+<td>Nothing leaves the building. Lowest risk.</td>
+</tr>
+<tr>
+<td>Azure OpenAI, UK South</td>
+<td>Microsoft, in the UK, under the school&#39;s Microsoft agreement</td>
+<td>Not used for training.</td>
+</tr>
+<tr>
+<td>Claude (Anthropic) or OpenAI</td>
+<td>The provider, usually in the US</td>
+<td>API data is not used for training by default; zero retention can be requested. International transfer: rely on the UK Extension to the EU–US Data Privacy Framework or standard contractual clauses (IDTA); check the provider&#39;s current terms.</td>
+</tr>
+<tr>
+<td>Google Gemini</td>
+<td>Google</td>
+<td>Use a paid project only (free-tier data may be used to improve products).</td>
+</tr>
+<tr>
+<td>The school&#39;s relay</td>
+<td>Wherever the relay sends it</td>
+<td>The relay is the school&#39;s processor arrangement; document it.</td>
+</tr>
+</tbody></table>
+<h2 id="security">Security</h2><ul>
+<li><strong>The key.</strong> Kept in memory for the session, or encrypted on one computer with a passphrase
+(AES-GCM, key derived with PBKDF2, 310,000 rounds). Never in the timetable, the file or the
+settings.</li>
+<li><strong>Where the app may connect.</strong> The app&#39;s security policy blocks every AI service unless the school
+downloads an AI-enabled copy for one chosen service.</li>
+<li><strong>Answers are untrusted.</strong> They must match a strict format, are checked again by the app&#39;s rules,
+and are shown as text, never run. A person approves every change, and Undo works.</li>
+</ul>
+<h2 id="rights-and-retention">Rights and retention</h2><ul>
+<li>The AI log keeps the latest 80 requests and answers, in codes, with the timetable. Because it holds
+no names, a subject access search (Setup, Personal data) does not find it. The full log can be
+downloaded from Setup, AI assistant.</li>
+<li>Providers keep API data for their own retention period (often up to 30 days for abuse
+monitoring) unless zero retention is agreed.</li>
+</ul>
+<h2 id="recommended-settings">Recommended settings</h2><ol>
+<li>Start with a local model or Azure OpenAI in UK South.</li>
+<li>Keep &quot;Show me exactly what is sent&quot; on until staff are confident.</li>
+<li>Give AI access only to the timetabler and the deputy who arranges cover.</li>
+<li>Review the AI log each term.</li>
+</ol>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

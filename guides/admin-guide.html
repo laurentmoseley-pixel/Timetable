@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For IT and admins: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html" aria-current="page">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="timetable-builder-guide-for-it-and-administrators">Timetable Builder: guide for IT and administrators</h1><p>This guide covers:</p>
+<ul>
+<li>choosing how the school runs the Timetable Builder</li>
+<li>installing it</li>
+<li>who can change what</li>
+<li>backups and updates</li>
+<li>data protection settings</li>
+</ul>
+<p>None of the main routes need a command line.</p>
+<h2 id="1-choose-an-edition">1. Choose an edition</h2><p>There is one app, delivered in three forms. The data model and the features are the same in each.</p>
+<table>
+<thead>
+<tr>
+<th>Edition</th>
+<th>Where the timetable is kept</th>
+<th>Several people at once</th>
+<th>What IT does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Single file</strong> (<code>Timetable-builder.html</code>)</td>
+<td>Inside the file, an Excel workbook, or a CSV folder, on the school&#39;s own storage</td>
+<td>One at a time, by passing the file or workbook</td>
+<td>Nothing. Keep the file in the school&#39;s own storage.</td>
+</tr>
+<tr>
+<td><strong>Hosted, with Microsoft 365 or Google</strong></td>
+<td>A workbook in OneDrive or a SharePoint library, or a Google Sheet</td>
+<td>Yes. Each person signs in with their school account. Saves are checked so nobody overwrites anyone else.</td>
+<td>Publish one file on an https address and register it with Microsoft and/or Google (about 30 minutes; see <a href="cloud-setup.html">CLOUD-SETUP.md</a>).</td>
+</tr>
+<tr>
+<td><strong>Power Apps</strong> (Dataverse)</td>
+<td>The Timetable item table in your Dataverse environment</td>
+<td>Yes, with changes saved as you go and shown to others within 30 seconds</td>
+<td>Create one table and a security role, then upload one web resource (about an hour; see section 3).</td>
+</tr>
+</tbody></table>
+<p>Things to know about each:</p>
+<ul>
+<li><strong>Every edition</strong><ul>
+<li>Works offline once open, apart from cloud saving.</li>
+<li>Never sends data anywhere except where you keep it. There is no tracking or analytics.</li>
+</ul>
+</li>
+<li><strong>Single file and hosted editions:</strong> the page carries a content security policy, so it cannot
+connect anywhere else.</li>
+<li><strong>Power Apps:</strong> the only edition that can send messages automatically, using a Power Automate
+flow (see <a href="power-automate-outbox.html">POWER-AUTOMATE-OUTBOX.md</a>).</li>
+</ul>
+<h2 id="2-single-file-and-hosted">2. Single file and hosted</h2><p><strong>Single file.</strong> Open <code>Timetable-builder.html</code> in Edge or Chrome. Edge and Chrome can save straight
+over the file and over Excel workbooks; other browsers save a new copy to Downloads.</p>
+<ul>
+<li><strong>Keep in mind:</strong> the file holds personal data when the timetable is kept inside it. Store it
+where staff files are stored, not on a personal device or a public link.</li>
+<li><strong>Shared computer:</strong> untick <strong>Keep unsaved work on this computer</strong> in <strong>Where your data is
+kept</strong>, so nothing is left in the browser.</li>
+</ul>
+<p><strong>Hosted.</strong> Follow <a href="cloud-setup.html">CLOUD-SETUP.md</a>. In short:</p>
+<ol>
+<li>Publish the app at an https address.</li>
+<li>Register it with Microsoft Entra (Files.ReadWrite.All, delegated, Single-page application, no
+secret) and/or Google Cloud (Sheets API, Internal consent screen, Web client).</li>
+<li>Put the IDs into the app.</li>
+<li>Download the app for your web site with the IDs built in, and upload it.</li>
+</ol>
+<p>The hosted file contains no timetable data.</p>
+<h2 id="3-power-apps-without-a-command-line-web-resource">3. Power Apps, without a command line (web resource)</h2><p>You need:</p>
+<ul>
+<li>a Power Platform environment with Dataverse</li>
+<li>a maker with System Customizer (or higher) in it</li>
+<li>Power Apps licences for the people who open the app</li>
+</ul>
+<ol>
+<li><strong>Create the table and the security roles.</strong> Follow <a href="setup.html">SETUP.md</a> sections 2 and 3: one table,
+<em>Timetable item</em>, with seven columns. Then create:<ul>
+<li><strong>Timetable editor:</strong> Create, Read, Write, Delete, Append, Append To</li>
+<li><strong>Timetable viewer:</strong> Read</li>
+</ul>
+</li>
+<li><strong>Upload the app.</strong><ol>
+<li>Go to make.powerapps.com, then <strong>Solutions</strong>, and open or create your solution.</li>
+<li>Choose <strong>New</strong>, then <strong>More</strong>, then <strong>Web resource</strong>.</li>
+<li>Upload the Power Apps file, <code>Timetable-builder-PowerApps-&lt;version&gt;.html</code>. Type: <strong>Webpage (HTML)</strong>. Display name:
+Timetable Builder. Name: for example <code>timetablebuilder.html</code>.</li>
+<li>Save, then choose <strong>Publish all customizations</strong>.</li>
+</ol>
+</li>
+<li><strong>Make the app.</strong><ol>
+<li>In the solution, choose <strong>New</strong>, then <strong>App</strong>, then <strong>Model-driven app</strong>, named Timetable
+Builder.</li>
+<li>Choose <strong>Add page</strong>, then <strong>Web resource</strong>, and pick the web resource.</li>
+<li>Save and <strong>Publish</strong>.</li>
+<li>Share the app with the people who need it, with the right security role.</li>
+</ol>
+</li>
+<li><strong>Recommended: the staff app.</strong> <a href="power-apps-staff-app.html">POWER-APPS-STAFF-APP.md</a> sets up a second app for staff (the
+Viewer, signed in, phone first, with lesson registers), without giving staff access to this table.</li>
+<li><strong>Optional: a view-only staff page.</strong> Upload the same file a second time with <code>staff</code> in its
+name, for example <code>timetablebuilder_staff.html</code>, and add it as a page. It opens straight on the
+staff day view, with nothing to edit.</li>
+<li><strong>First run.</strong><ol>
+<li>Open the app and press <strong>Check setup</strong>. It writes, reads back and deletes a test row, and
+names any column that is set up wrongly.</li>
+<li>Choose <strong>Start a new timetable</strong>, or bring in a timetable from the single-file edition
+(<strong>File</strong>, then <strong>Bring in data from a backup</strong>).</li>
+</ol>
+</li>
+</ol>
+<p><a href="setup.html">SETUP.md</a> section 4 describes the Power Apps <em>code app</em> route instead. That needs Node.js and the
+Power Platform command line, usually done by a partner.</p>
+<h2 id="4-who-can-change-what">4. Who can change what</h2><p>There are three layers:</p>
+<ol>
+<li><p><strong>Who can open the data at all.</strong> This is the real lock:</p>
+<ul>
+<li>for a file or workbook, its storage permissions</li>
+<li>in Microsoft 365 or Google, sharing (Can edit or Can view)</li>
+<li>in Power Apps, the security role</li>
+</ul>
+</li>
+<li><p><strong>Roles inside the app.</strong> Setup, then <strong>Who can change this timetable</strong>:</p>
+<ul>
+<li><strong>Can change everything</strong></li>
+<li><strong>Cover and the day only:</strong> the office can arrange cover without touching the timetable</li>
+<li><strong>Can look, not change</strong></li>
+</ul>
+<p>People are matched by the account they sign in with: the Microsoft account, the Google
+account, or the Power Apps user&#39;s sign-in name. When the timetable is in a file on a computer,
+the app cannot tell who is using it, so these roles apply only to signed-in editions. Nobody
+can remove their own access by mistake.</p>
+</li>
+<li><p><strong>The staff view.</strong> Open it from the File menu, or use the <code>#staff</code> address. It shows the day
+for everyone, with nothing to edit.</p>
+</li>
+</ol>
+<h2 id="5-branding-and-support-details">5. Branding and support details</h2><ul>
+<li><strong>Setup, then Your school&#39;s look:</strong> a logo, and a colour that is adjusted automatically to keep
+text readable (WCAG 2.2 AA).</li>
+<li><strong>Support contact:</strong> set it in <strong>Where your data is kept</strong>, then <strong>Cloud sign-in (for your IT
+team)</strong>, then <strong>Support contact</strong>. It appears in Help, About and privacy. It is stored with the
+hosted app&#39;s settings, not in the timetable.</li>
+</ul>
+<h2 id="6-backups-updates-and-moving-between-editions">6. Backups, updates and moving between editions</h2><ul>
+<li><strong>Backups</strong><ul>
+<li><strong>File, then Save a backup file of everything:</strong> a <code>.json</code> file with everything, including
+settings, scenarios and snapshots.</li>
+<li><strong>File, then Everything to Excel:</strong> a workbook that can be opened again in any edition.</li>
+<li>The <strong>Getting started</strong> list reminds people every two weeks.</li>
+</ul>
+</li>
+<li><strong>Updates</strong><ul>
+<li><em>Single file:</em> open your timetable in the new version with <strong>File</strong>, then <strong>Bring in data
+from a backup</strong>, or open your workbook from <strong>Where your data is kept</strong>.</li>
+<li><em>Hosted:</em> replace <code>index.html</code>. The data stays in Microsoft 365 or Google.</li>
+<li><em>Power Apps:</em> upload the new file over the web resource and publish. The data stays in
+Dataverse.</li>
+<li>After an update, <strong>What&#39;s new</strong> shows once.</li>
+</ul>
+</li>
+<li><strong>Moving between editions:</strong> every edition can export everything to Excel, and open that
+workbook.</li>
+</ul>
+<h2 id="7-data-protection">7. Data protection</h2><p><a href="data-protection.html">DATA-PROTECTION.md</a> lists:</p>
+<ul>
+<li>what the app holds</li>
+<li>where it goes</li>
+<li>the tools for subject access requests and for removing old records</li>
+<li>answers for a DPIA</li>
+</ul>
+<h2 id="8-troubleshooting">8. Troubleshooting</h2><table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Changes are not saving (Power Apps)</td>
+<td>Check the user&#39;s security role. Then press <strong>Check setup</strong> on the opening screen.</td>
+</tr>
+<tr>
+<td>&quot;Microsoft does not know this web address&quot;</td>
+<td>See <a href="cloud-setup.html">CLOUD-SETUP.md</a>, Troubleshooting.</td>
+</tr>
+<tr>
+<td>Cloud choices say they need a web address</td>
+<td>The app was opened as a file. Open it from its https address.</td>
+</tr>
+<tr>
+<td>&quot;Someone else has saved…&quot;</td>
+<td>Choose <strong>Open their version</strong> or <strong>Save mine over theirs</strong>. A copy of yours is downloaded first.</td>
+</tr>
+<tr>
+<td>The welcome screen keeps appearing</td>
+<td>It only shows for an empty timetable. Add the school day, or open your workbook.</td>
+</tr>
+<tr>
+<td>Something else</td>
+<td>In the browser&#39;s developer tools console, look for red errors and send them to your support contact.</td>
+</tr>
+</tbody></table>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

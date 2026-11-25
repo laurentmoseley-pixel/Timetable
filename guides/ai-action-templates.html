@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI action templates: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html" aria-current="page">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="ai-action-templates-the-format-with-examples">AI action templates: the format, with examples</h1><p>Every AI button in the Timetable Builder is a <strong>template</strong>: a small piece of data that says where the
+button goes, what data it may send, what it asks the AI and how the app checks the answer. The seven
+official actions are templates too. You make your own in <strong>Setup, AI actions</strong>, with a form, with no
+code. This guide describes the format for anyone who wants to understand it, write packs by hand or
+review one before bringing it in.</p>
+<p>The AI assistant itself is described in <a href="ai-providers.html">AI-PROVIDERS.md</a> (connecting a service) and <a href="ai-privacy.html">AI-PRIVACY.md</a> (what
+is sent). Nothing in a template can get round the privacy gateway or the app&#39;s checks: a template
+only chooses from what the app allows.</p>
+<h2 id="how-an-action-runs">How an action runs</h2><ol>
+<li>A person presses the button. If the prompt has <code>{{question}}</code>, they are asked what to do first.</li>
+<li>The <strong>privacy gateway</strong> builds the data the template asks for, as codes, fills the placeholders,
+checks the whole request for names, emails, staff codes and notes, and sends it to the school&#39;s
+chosen AI service.</li>
+<li>The answer must match the <strong>answer format</strong> for the template&#39;s kind exactly. If it does not, the
+AI is asked once more, then the action stops.</li>
+<li>The app <strong>checks</strong> the answer with its own rules. If it fails, the reasons go back to the AI to try
+again, up to the template&#39;s number of attempts (5 at most). Then it stops and nothing changes.</li>
+<li>A person sees before and after and chooses Approve, Edit or Reject. Approving is one change, so
+Undo puts it back. Explanations change nothing.</li>
+</ol>
+<h2 id="the-fields">The fields</h2><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it is</th>
+<th>Rules</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>name</code></td>
+<td>The action&#39;s name, in the library and the AI log</td>
+<td>Required; plain text; up to 60 characters</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>The text on the button</td>
+<td>Required; plain text; up to 28 characters</td>
+</tr>
+<tr>
+<td><code>icon</code></td>
+<td>The button&#39;s icon</td>
+<td>One of <code>sparkle</code> <code>wand</code> <code>calendar</code> <code>clock</code> <code>people</code> <code>person</code> <code>room</code> <code>question</code> <code>balance</code> <code>list</code> <code>shield</code> <code>swap</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>What it is for, shown on the button and in the review</td>
+<td>Plain text; up to 200 characters</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>What it does, which decides the answer format and the checks</td>
+<td><code>lessonMoves</code>, <code>cover</code>, <code>explain</code> or <code>columnMap</code> (below)</td>
+</tr>
+<tr>
+<td><code>place</code></td>
+<td>Where the button goes</td>
+<td>See <em>Places and placeholders</em>; must suit the kind</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>The data it may send</td>
+<td>A list from <em>Data</em>; the data its kind needs is always added</td>
+</tr>
+<tr>
+<td><code>prompt</code></td>
+<td>What the AI should do, with <code>{{placeholders}}</code></td>
+<td>20 to 4,000 characters; no keys, emails or names</td>
+</tr>
+<tr>
+<td><code>checks</code></td>
+<td>Extra checks, on top of the ones its kind always has</td>
+<td><code>onlyTarget</code>, <code>progress</code> (below)</td>
+</tr>
+<tr>
+<td><code>maxAttempts</code></td>
+<td>How many proposals the AI may make before the action stops</td>
+<td>1 to 5</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>Goes up by one each time it is saved</td>
+<td>Set by the app</td>
+</tr>
+</tbody></table>
+<p>The app adds the rest itself: the standard instructions (the same for every action, written to work
+on any AI service) and the answer format for the kind. Custom templates cannot change either. A
+template can never call itself official, use an official action&#39;s id, or switch off the checks its
+kind needs.</p>
+<h2 id="kinds">Kinds</h2><table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>What it does</th>
+<th>Can go on</th>
+<th>Data always sent</th>
+<th>Checks always on</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>lessonMoves</code></td>
+<td>Moves lessons (to another day, period, room or staff) and adds new ones</td>
+<td>Build toolbar, a group, a member of staff, the lesson editor, the open scenario, someone who is off</td>
+<td><code>school</code>, <code>lessons</code></td>
+<td>Every lesson, day, period, room and person must exist; locked lessons never move; the whole timetable with the proposal in it must break no rule it did not already break</td>
+</tr>
+<tr>
+<td><code>cover</code></td>
+<td>Chooses who covers each lesson of an absence</td>
+<td>Cover, someone who is off</td>
+<td><code>cover</code></td>
+<td>Everyone chosen must be free, do cover, not be doubled, and stay within the day&#39;s cover limit</td>
+</tr>
+<tr>
+<td><code>explain</code></td>
+<td>Explains, in a summary and up to 8 points; changes nothing</td>
+<td>Anywhere except Upload sheets</td>
+<td>(none)</td>
+<td>(none: nothing changes)</td>
+</tr>
+<tr>
+<td><code>columnMap</code></td>
+<td>Matches a spreadsheet&#39;s columns to what the app needs</td>
+<td>Upload sheets</td>
+<td><code>columns</code> (only)</td>
+<td>Day, period and class matched, each field once, and the sheet must then read cleanly</td>
+</tr>
+</tbody></table>
+<p><strong>Optional checks</strong> (<code>lessonMoves</code> only):</p>
+<ul>
+<li><code>onlyTarget</code>: only the lessons of this group, person or lesson may change. Needs a button on a
+group, a member of staff, the lesson editor or someone who is off.</li>
+<li><code>progress</code>: it must leave fewer rule problems than it found. Needs <code>problems</code> in the data.</li>
+</ul>
+<h2 id="places-and-placeholders">Places and placeholders</h2><p>Placeholders are filled in by the app, as codes, when the button is pressed.</p>
+<table>
+<thead>
+<tr>
+<th>Place (<code>place</code>)</th>
+<th>Where the button appears</th>
+<th>Placeholders it fills</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>build.toolbar</code></td>
+<td>Build, on the toolbar</td>
+<td>(only the two below)</td>
+</tr>
+<tr>
+<td><code>group</code></td>
+<td>Auto build, on each group</td>
+<td><code>{{group_code}}</code></td>
+</tr>
+<tr>
+<td><code>absence</code></td>
+<td>Cover, next to each person who is off</td>
+<td><code>{{staff_code}}</code> <code>{{date}}</code> <code>{{weekday}}</code></td>
+</tr>
+<tr>
+<td><code>staffTimetable</code></td>
+<td>Individual, on a member of staff&#39;s timetable</td>
+<td><code>{{staff_code}}</code></td>
+</tr>
+<tr>
+<td><code>lesson</code></td>
+<td>Build, in the lesson editor</td>
+<td><code>{{lesson_code}}</code></td>
+</tr>
+<tr>
+<td><code>scenario</code></td>
+<td>Scenarios, only while a scenario is open</td>
+<td>(only the two below)</td>
+</tr>
+<tr>
+<td><code>import</code></td>
+<td>Upload sheets, when a lessons sheet is not recognised</td>
+<td>(only the two below)</td>
+</tr>
+</tbody></table>
+<p>Everywhere:</p>
+<ul>
+<li><code>{{constraints}}</code>: the school&#39;s hard rules and preferences in words. Add it to any action that moves
+lessons; it helps the AI succeed first time.</li>
+<li><code>{{question}}</code>: what the person types when they press the button. On Scenarios it comes from the
+what-if box; anywhere else the app asks. People, groups and rooms chosen from the list go as codes.
+A typed name is refused, not sent.</li>
+</ul>
+<p><strong>References.</strong> In a prompt, <code>@[Name]</code> stands for a person, group, room or subject in your school,
+and is sent as its code. The builder&#39;s list inserts them. They only make sense in your own school, so
+avoid them in actions you share.</p>
+<h2 id="data">Data</h2><p>The template chooses what the gateway may send, from this list. Everything is codes: <code>S</code> staff, <code>G</code>
+groups, <code>R</code> rooms, <code>Su</code> subjects, <code>L</code> lessons, <code>P</code> pupils, <code>N</code> cover needs, <code>C</code> columns. The codes
+are different for every action.</p>
+<table>
+<thead>
+<tr>
+<th><code>scope</code></th>
+<th>What goes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>school</code></td>
+<td>Days, periods and their times</td>
+</tr>
+<tr>
+<td><code>subjects</code></td>
+<td>Subjects (standard subject names; any other subject as a code)</td>
+</tr>
+<tr>
+<td><code>staff</code></td>
+<td>Staff as codes, with roles, subjects they teach, working days and limits</td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td>Groups as codes, with size, adult ratio and weekly plan</td>
+</tr>
+<tr>
+<td><code>rooms</code></td>
+<td>Rooms as codes</td>
+</tr>
+<tr>
+<td><code>lessons</code></td>
+<td>Every lesson: group, day, period, subject, staff, room (all codes)</td>
+</tr>
+<tr>
+<td><code>problems</code></td>
+<td>Rule problems from the Checks, in codes</td>
+</tr>
+<tr>
+<td><code>absences</code></td>
+<td>Who is away on the chosen day and which periods (no reasons)</td>
+</tr>
+<tr>
+<td><code>cover</code></td>
+<td>For one day: lessons needing cover and which staff are free for each (Cover only)</td>
+</tr>
+<tr>
+<td><code>columns</code></td>
+<td>A spreadsheet&#39;s column headings and the kind of values in each, never the values (Upload sheets only)</td>
+</tr>
+<tr>
+<td><code>pupils</code></td>
+<td>Pupils as codes and their groups (only when an action truly needs it; record it in your DPIA)</td>
+</tr>
+</tbody></table>
+<p>Never sent, whatever the template says: names, emails, the school&#39;s own staff codes and pupil numbers,
+group and room names, lesson titles, absence reasons, notes or anything else typed as free text.</p>
+<h2 id="answer-formats">Answer formats</h2><p>The AI must reply with JSON in exactly this shape. The app checks it, and refuses codes that were not
+in the data. Days count from 0 (the first school day); periods count teaching periods from 1.</p>
+<p><strong><code>lessonMoves</code></strong></p>
+<pre><code class="language-json">{ &quot;changes&quot;: [ { &quot;lesson&quot;: &quot;L12&quot;, &quot;day&quot;: 2, &quot;period&quot;: 3, &quot;room&quot;: &quot;R4&quot;, &quot;staff&quot;: [&quot;S7&quot;] } ],
+  &quot;adds&quot;:    [ { &quot;group&quot;: &quot;G3&quot;, &quot;subject&quot;: &quot;Su5&quot;, &quot;day&quot;: 0, &quot;period&quot;: 1, &quot;length&quot;: 2, &quot;room&quot;: &quot;R2&quot;, &quot;staff&quot;: [&quot;S1&quot;] } ],
+  &quot;notes&quot;: &quot;Why, in a sentence or two.&quot; }
+</code></pre>
+<p><code>room</code> and <code>staff</code> in a change are optional (leave them out to keep what is there). <code>length</code> 2 is a
+double.</p>
+<p><strong><code>cover</code></strong></p>
+<pre><code class="language-json">{ &quot;assignments&quot;: [ { &quot;need&quot;: &quot;N1&quot;, &quot;staff&quot;: &quot;S4&quot; } ], &quot;unfilled&quot;: [&quot;N3&quot;], &quot;notes&quot;: &quot;…&quot; }
+</code></pre>
+<p><strong><code>explain</code></strong></p>
+<pre><code class="language-json">{ &quot;summary&quot;: &quot;…&quot;, &quot;points&quot;: [&quot;…&quot;, &quot;…&quot;] }
+</code></pre>
+<p><strong><code>columnMap</code></strong></p>
+<pre><code class="language-json">{ &quot;columns&quot;: [ { &quot;column&quot;: &quot;C1&quot;, &quot;field&quot;: &quot;day&quot; }, { &quot;column&quot;: &quot;C2&quot;, &quot;field&quot;: &quot;period&quot; } ], &quot;notes&quot;: &quot;…&quot; }
+</code></pre>
+<p>Fields: <code>day</code> <code>period</code> <code>class</code> <code>subjectCode</code> <code>subject</code> <code>title</code> <code>room</code> <code>staffCodes</code> <code>staff</code>
+<code>studentCodes</code> <code>students</code> <code>block</code> <code>ignore</code>.</p>
+<h2 id="writing-a-prompt-that-works-on-any-ai-service">Writing a prompt that works on any AI service</h2><ul>
+<li>Say what to do with the data, in plain words: &quot;Move…&quot;, &quot;Choose…&quot;, &quot;Explain…&quot;.</li>
+<li>Refer to the data by its names: <code>changes</code>, <code>adds</code>, <code>cover.needs</code>, <code>problems</code>, <code>coversThisTerm</code>.</li>
+<li>Say what <em>not</em> to do: &quot;Only move {{group_code}}&#39;s lessons&quot;, &quot;leave adds empty&quot;, &quot;move as few as
+possible&quot;.</li>
+<li>Add <code>{{constraints}}</code> to anything that moves lessons.</li>
+<li>Say what to do if it cannot be done: &quot;change nothing and say why in notes&quot;.</li>
+<li>Do not name an AI service or use one service&#39;s special wording. The builder warns if you do.</li>
+<li>Do not type names. A whole name, staff code or email cannot be saved. If a word in your prompt is
+also part of someone&#39;s name in your school (for example &quot;will&quot;, &quot;may&quot;, &quot;grace&quot;), the builder asks
+you to confirm it is an ordinary word there. That confirmation is kept with the action in your
+timetable only, never in a pack.</li>
+</ul>
+<h2 id="versions">Versions</h2><p>Each save is a new version, numbered. The last 10 earlier versions are kept with the timetable, with
+when they were saved and by whom. In the builder, <strong>Earlier versions</strong> loads one back into the form;
+saving it makes it the newest version. Deleting an action deletes its versions; Undo brings them
+back.</p>
+<h2 id="packs">Packs</h2><p>A pack is a JSON file of actions to share with another school or keep as a backup. <strong>Save your actions
+as a pack</strong> saves them all; <strong>Share</strong> on one action saves just that one.</p>
+<pre><code class="language-json">{
+  &quot;format&quot;: &quot;tt-ai-actions-1&quot;,
+  &quot;name&quot;: &quot;Example AI actions&quot;,
+  &quot;exported&quot;: &quot;2026-10-28&quot;,
+  &quot;app&quot;: &quot;Timetable Builder 3.2.0-preview.3&quot;,
+  &quot;actions&quot;: [ { &quot;version&quot;: 1, &quot;name&quot;: &quot;…&quot;, &quot;label&quot;: &quot;…&quot;, &quot;icon&quot;: &quot;calendar&quot;, &quot;place&quot;: &quot;group&quot;,
+                 &quot;kind&quot;: &quot;lessonMoves&quot;, &quot;description&quot;: &quot;…&quot;, &quot;scope&quot;: [&quot;school&quot;, &quot;lessons&quot;],
+                 &quot;prompt&quot;: &quot;…&quot;, &quot;checks&quot;: [&quot;valid&quot;, &quot;hardRules&quot;, &quot;onlyTarget&quot;], &quot;maxAttempts&quot;: 5,
+                 &quot;id&quot;: &quot;&quot;, &quot;official&quot;: false } ]
+}
+</code></pre>
+<p>A pack holds the current version of each action only: no history, no names of who saved it, no
+confirmed words and no timetable data.</p>
+<p><strong>Bringing one in</strong> (Setup, AI actions, Bring in an action pack):</p>
+<ul>
+<li>Every action goes through the same cleaning as one made in the form. Unknown fields are ignored;
+text is made plain; the place, kind, data and checks must be ones the app knows and must fit
+together.</li>
+<li>An action with a key, an email address, or a name, staff code or email from <em>your</em> timetable in its
+prompt is not brought in. You are told which and why.</li>
+<li>An action that says it is official comes in as custom. None can take an official action&#39;s id.</li>
+<li>Actions brought in are <strong>switched off</strong> until you have looked at them. Open each, choose <strong>Try it on
+practice data</strong>, then tick <strong>On</strong>.</li>
+<li>Up to 50 actions, and 500 KB, per pack.</li>
+</ul>
+<h2 id="practice-data">Practice data</h2><p><strong>Preview what it sends</strong> builds the request from a made-up school (the demo school) and shows it;
+nothing is sent. <strong>Try it on practice data</strong> runs the action on that made-up school: the same gateway,
+the same checks and the same review, marked <em>Practice run</em>, with nothing to approve. Your timetable is
+not touched, and the AI never sees it. The prompt&#39;s own words are still checked against your real
+timetable before anything is sent. Practice runs are recorded in the AI log, marked &quot;(practice)&quot;.</p>
+<h2 id="examples">Examples</h2><p><code>docs/examples/ai-action-pack-example.json</code> is a pack of six example custom actions. Bring it in to
+try them:</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Kind</th>
+<th>Place</th>
+<th>Shows how to</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Spread PE across the week</td>
+<td>lessonMoves</td>
+<td>group</td>
+<td>limit an action to one group (<code>onlyTarget</code>)</td>
+</tr>
+<tr>
+<td>Find a better slot for this lesson</td>
+<td>lessonMoves</td>
+<td>lesson</td>
+<td>move just one lesson, or explain why not</td>
+</tr>
+<tr>
+<td>Fix the worst problem first</td>
+<td>lessonMoves</td>
+<td>Build toolbar</td>
+<td>use the rule problems, and insist on progress</td>
+</tr>
+<tr>
+<td>Cover with one person where possible</td>
+<td>cover</td>
+<td>someone who is off</td>
+<td>change how cover is chosen</td>
+</tr>
+<tr>
+<td>Summarise a teacher&#39;s week</td>
+<td>explain</td>
+<td>a member of staff</td>
+<td>explain, changing nothing</td>
+</tr>
+<tr>
+<td>Ask about a group</td>
+<td>explain</td>
+<td>a group</td>
+<td>take a typed question</td>
+</tr>
+</tbody></table>
+<p>One in full:</p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;Spread PE across the week&quot;,
+  &quot;label&quot;: &quot;Spread PE&quot;,
+  &quot;icon&quot;: &quot;calendar&quot;,
+  &quot;kind&quot;: &quot;lessonMoves&quot;,
+  &quot;place&quot;: &quot;group&quot;,
+  &quot;description&quot;: &quot;Moves a group&#39;s PE so no two lessons fall on the same day.&quot;,
+  &quot;scope&quot;: [&quot;school&quot;, &quot;subjects&quot;, &quot;staff&quot;, &quot;groups&quot;, &quot;rooms&quot;, &quot;lessons&quot;],
+  &quot;checks&quot;: [&quot;onlyTarget&quot;],
+  &quot;maxAttempts&quot;: 5,
+  &quot;prompt&quot;: &quot;Look at group {{group_code}}&#39;s PE lessons (subject PE). Move them (changes) so that no two fall on the same day and none is in the period straight after lunch. Only move {{group_code}}&#39;s lessons, move as few as possible, and leave adds empty.\n{{constraints}}&quot;
+}
+</code></pre>
+<h2 id="the-official-actions">The official actions</h2><p>These are built in and locked. You can view each, switch it off, or duplicate it to make your own
+version.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Kind</th>
+<th>Place</th>
+<th>Data</th>
+<th>Extra checks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Fix all clashes</td>
+<td>lessonMoves</td>
+<td>Build toolbar</td>
+<td>school, subjects, staff, groups, rooms, lessons, problems</td>
+<td>progress</td>
+</tr>
+<tr>
+<td>Timetable this class</td>
+<td>lessonMoves</td>
+<td>a group</td>
+<td>school, subjects, staff, groups, rooms, lessons</td>
+<td>onlyTarget</td>
+</tr>
+<tr>
+<td>Find cover</td>
+<td>cover</td>
+<td>someone who is off</td>
+<td>cover, staff, subjects, groups</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Balance this week</td>
+<td>lessonMoves</td>
+<td>a member of staff</td>
+<td>school, subjects, staff, groups, rooms, lessons</td>
+<td>onlyTarget</td>
+</tr>
+<tr>
+<td>Explain this placement</td>
+<td>explain</td>
+<td>the lesson editor</td>
+<td>school, subjects, staff, groups, rooms, lessons, problems</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Run a what-if</td>
+<td>lessonMoves</td>
+<td>the open scenario</td>
+<td>school, subjects, staff, groups, rooms, lessons</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Map my spreadsheet</td>
+<td>columnMap</td>
+<td>Upload sheets</td>
+<td>columns</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2 id="for-developers">For developers</h2><p>The template rules live in <code>src/lib/ai-actions.js</code> (<code>TTAIActions</code>): <code>OFFICIAL</code>, <code>KIND_RULES</code>,
+<code>PLACE_VARS</code>, <code>PLACEHOLDERS</code>, <code>CHECKS</code>, <code>cleanTemplate</code>, <code>runnable</code>, <code>makePack</code> and <code>readPack</code>. A new
+kind needs an answer format in <code>SCHEMAS</code>, rules in <code>KIND_RULES</code>, and a checker and review in the app
+(<code>aiCheckMoves</code>, <code>aiCheckCover</code>, <code>aiCheckColumns</code>). A new place needs an entry in <code>PLACES</code> and
+<code>PLACE_VARS</code>, and an <code>aiBtns(&#39;&lt;place&gt;&#39;, context)</code> call where the button should appear. Tests:
+<code>tests/unit/ai-actions.test.mjs</code> and <code>tests/ai-library.test.cjs</code>.</p>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

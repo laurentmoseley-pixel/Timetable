@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Power Apps staff app: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html" aria-current="page">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="power-apps-the-slt-build-app-and-the-staff-app-with-lesson-registers">Power Apps: the SLT build app and the staff app (with lesson registers)</h1><p>This guide sets up two apps in your Power Apps environment:</p>
+<table>
+<thead>
+<tr>
+<th>App</th>
+<th>Who uses it</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Timetable Builder</strong> (the SLT build app)</td>
+<td>Timetablers and senior leaders</td>
+<td>The full Timetable Builder: it builds the timetable, arranges cover and runs the day. It keeps the staff app up to date by itself, and its Today page shows <strong>Lesson registers</strong>.</td>
+</tr>
+<tr>
+<td><strong>Timetable Viewer</strong> (the staff app)</td>
+<td>All staff, on a phone or a computer</td>
+<td>Each person&#39;s day, with what is on now and next, their week, cover, rooms and groups. Its one job besides showing is <strong>Take register</strong> on the lessons they teach or cover.</td>
+</tr>
+</tbody></table>
+<p>Any app you already have in the environment is left alone. Nothing here changes or deletes your
+existing tables. If your existing app <em>is</em> the Timetable Builder, you only replace its file (step 1).</p>
+<p>None of this needs a command line. It is all done at make.powerapps.com in a browser, by someone
+with the System Customizer or System Administrator role. Allow about 45 minutes.</p>
+<h2 id="how-the-data-is-kept-apart">How the data is kept apart</h2><pre><code>Timetable Builder (SLT)  ──writes──►  Timetable item       (everything; SLT only)
+        │
+        └──writes a staff-safe copy──►  Timetable published  (staff can read)
+                                                │
+Timetable Viewer (staff)  ◄──reads──────────────┘
+        │
+        └──saves registers──►  Timetable register   (staff add their own)
+                                        │
+Timetable Builder, Today  ◄──reads──────┘
+</code></pre>
+<p>Staff never need any access to the <strong>Timetable item</strong> table, which holds everything, including
+pupil details, absence reasons and notes. Their app reads only the staff copy. The copy holds:</p>
+<ul>
+<li>the timetable</li>
+<li>each published day, with its cover and duties</li>
+<li>each group&#39;s pupil list (names), for registers</li>
+<li>which pupils the office has reported off, with no reasons</li>
+</ul>
+<p>It never holds emails, pupil numbers, reasons for absence, notes or notices. Staff are recognised by
+a one-way code of their email, which cannot be turned back into the email.</p>
+<h2 id="before-you-start">Before you start</h2><ul>
+<li><strong>Licences.</strong> Everyone who opens a model-driven app that uses Dataverse needs a Power Apps
+licence that includes Dataverse, such as Power Apps Premium, a per-app licence or
+pay-as-you-go. The Power Apps rights that come with Microsoft 365 (including A3 and A5) do not
+include Dataverse. Check this with whoever handles your Microsoft licensing before giving the staff
+app to every member of staff. If licences for all staff are not possible, the file Viewer
+(<a href="staff-viewer.html">STAFF-VIEWER.md</a>) needs none, but it has no registers.</li>
+<li><strong>The Timetable item table</strong> is already set up (<a href="setup.html">SETUP.md</a> section 2), and the Timetable Builder
+works in your environment.</li>
+<li><strong>Staff emails.</strong> In the Timetable Builder, <strong>Setup, Staff</strong>, each person&#39;s email must be the one
+they sign in to Microsoft 365 with. That is how the staff app knows who is who.</li>
+</ul>
+<h2 id="1-the-slt-build-app-update-its-file">1. The SLT build app: update its file</h2><ol>
+<li><p>Go to make.powerapps.com, choose your environment, then <strong>Solutions</strong>, and open the solution that
+holds the Timetable Builder web resource.</p>
+</li>
+<li><p>Open the web resource (for example <code>timetablebuilder.html</code>) and choose <strong>Upload file</strong>. Pick
+<code>Timetable-builder-PowerApps-3.3.html</code> from this package. Choose <strong>Save</strong>, then <strong>Publish</strong>.</p>
+<p>If you do not have the Timetable Builder in Power Apps yet, follow <a href="admin-guide.html">ADMIN-GUIDE.md</a> section 3 first.</p>
+</li>
+</ol>
+<h2 id="2-create-the-timetable-published-table">2. Create the Timetable published table</h2><ol>
+<li><strong>Tables</strong>, then <strong>New table</strong>, then <strong>Start with a blank table</strong> (or <strong>Set advanced properties</strong>).</li>
+<li>Display name: <strong>Timetable published</strong>. Plural name: <strong>Timetable published copies</strong>.</li>
+<li>Keep the primary column as <strong>Name</strong>.</li>
+<li>Save, then add these columns. Type the display names exactly as shown. Dataverse makes the
+logical names from them.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Display name</th>
+<th>Data type</th>
+<th>Maximum length</th>
+<th>Logical name ends with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Timetable code</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_timetablecode</code></td>
+</tr>
+<tr>
+<td>Part</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_part</code></td>
+</tr>
+<tr>
+<td>Published data</td>
+<td>Multiple lines of text (Plain text)</td>
+<td><strong>1,048,576</strong></td>
+<td><code>_publisheddata</code></td>
+</tr>
+</tbody></table>
+<h2 id="3-create-the-timetable-register-table">3. Create the Timetable register table</h2><ol>
+<li><strong>Tables</strong>, then <strong>New table</strong>, as before.</li>
+<li>Display name: <strong>Timetable register</strong>. Plural name: <strong>Timetable registers</strong>.</li>
+<li>Keep the primary column as <strong>Name</strong>.</li>
+<li>Add these columns:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Display name</th>
+<th>Data type</th>
+<th>Maximum length</th>
+<th>Logical name ends with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Register key</td>
+<td>Single line of text (Plain text)</td>
+<td>200</td>
+<td><code>_registerkey</code></td>
+</tr>
+<tr>
+<td>Register date</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_registerdate</code></td>
+</tr>
+<tr>
+<td>Group name</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_groupname</code></td>
+</tr>
+<tr>
+<td>Period</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_period</code></td>
+</tr>
+<tr>
+<td>Taken by</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_takenby</code></td>
+</tr>
+<tr>
+<td>Marks</td>
+<td>Multiple lines of text (Plain text)</td>
+<td><strong>1,048,576</strong></td>
+<td><code>_marks</code></td>
+</tr>
+<tr>
+<td>Timetable code</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_timetablecode</code></td>
+</tr>
+</tbody></table>
+<p>All three tables must use the same publisher prefix (the part before the underscore, for example
+<code>cr4d2_</code>). They will if you make them in the same solution.</p>
+<p><strong>The Multiple lines of text columns must have their maximum raised to 1,048,576.</strong> If they are left
+at the default, publishing or saving a register fails. The Builder&#39;s <strong>Check the staff app tables</strong>
+button spots this.</p>
+<h2 id="4-security-roles">4. Security roles</h2><p><strong>Timetable editor</strong> (the SLT role you already have): open it, then on the <strong>Custom Entities</strong> tab give it:</p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Create</th>
+<th>Read</th>
+<th>Write</th>
+<th>Delete</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Timetable item (already set)</td>
+<td>Organization</td>
+<td>Organization</td>
+<td>Organization</td>
+<td>Organization</td>
+</tr>
+<tr>
+<td>Timetable published</td>
+<td>Organization</td>
+<td>Organization</td>
+<td>Organization</td>
+<td>Organization</td>
+</tr>
+<tr>
+<td>Timetable register</td>
+<td>Organization</td>
+<td>Organization</td>
+<td>Organization</td>
+<td>Organization</td>
+</tr>
+</tbody></table>
+<p><strong>Timetable staff</strong> (new): <strong>Security roles</strong>, <strong>New role</strong>, named Timetable staff:</p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Create</th>
+<th>Read</th>
+<th>Write</th>
+<th>Delete</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Timetable item</td>
+<td>none</td>
+<td><strong>none</strong></td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Timetable published</td>
+<td>none</td>
+<td>Organization</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Timetable register</td>
+<td>User</td>
+<td>Organization</td>
+<td>User</td>
+<td>none</td>
+</tr>
+</tbody></table>
+<p>These permissions mean staff can:</p>
+<ul>
+<li>read the staff copy, but not change it</li>
+<li>add registers</li>
+<li>correct only the registers they took themselves</li>
+<li>see that a colleague has already taken a register, so that two adults in a lesson do not both take it</li>
+</ul>
+<p>Give staff the <strong>Basic User</strong> role as well. Power Apps needs it to open any model-driven app.</p>
+<h2 id="5-the-staff-app">5. The staff app</h2><ol>
+<li>In your solution: <strong>New</strong>, <strong>More</strong>, <strong>Web resource</strong>. Upload <code>Timetable-Viewer-3.3.html</code>. Type:
+<strong>Webpage (HTML)</strong>. Display name: <strong>Timetable Viewer</strong>. Name: for example <code>timetableviewer.html</code>.
+<strong>Save</strong>, then <strong>Publish</strong>.</li>
+<li><strong>New</strong>, <strong>App</strong>, <strong>Model-driven app</strong>, named <strong>Timetable Viewer</strong>.</li>
+<li><strong>Add page</strong>, <strong>Web resource</strong>, pick Timetable Viewer. In the navigation, remove anything else so
+it opens straight on the Viewer. <strong>Save</strong> and <strong>Publish</strong>.</li>
+<li><strong>Share</strong> the app with staff, giving them the <strong>Timetable staff</strong> role (and Basic User).</li>
+</ol>
+<p>Staff can open it in a browser, or in the <strong>Power Apps</strong> app on their phone. It is designed for phones
+first.</p>
+<h2 id="6-first-run">6. First run</h2><ol>
+<li>Open the <strong>Timetable Builder</strong> app. Go to <strong>Setup, Staff viewer</strong>.</li>
+<li>Choose <strong>Check the staff app tables</strong>. It should say both tables are there. If not, it says which
+column to fix.</li>
+<li>Choose <strong>Update the staff app now</strong>. From then on, <strong>Keep the staff app up to date by itself</strong> does
+it within a minute of any change, and again each morning, as long as someone has the Builder open.
+Tick there what staff may see: anyone&#39;s timetable, rooms, groups, the cover board, and who is away.</li>
+<li>Open the <strong>Timetable Viewer</strong> app as a member of staff. It shows their name and their day straight
+away.</li>
+</ol>
+<h2 id="lesson-registers">Lesson registers</h2><p><strong>For staff.</strong> In the staff app, each lesson or cover they have today shows <strong>Take register</strong>, from 5
+minutes before it starts.</p>
+<ul>
+<li>Each pupil is marked <strong>Present</strong>, <strong>Late</strong>, <strong>Absent</strong> or <strong>Out of lesson</strong>. Pupils the office has
+reported off are already marked Absent and labelled <em>Reported off</em>.</li>
+<li><strong>Everyone else present</strong> marks the rest in one go.</li>
+<li>It can be saved once everyone is marked. Afterwards the lesson shows <strong>✓ Register</strong> and the time.
+Opening it again lets them correct it.</li>
+</ul>
+<p><strong>For leaders.</strong> In the Timetable Builder, <strong>Today</strong>, the <strong>Lesson registers</strong> card shows each group in
+each period of the chosen day:</p>
+<ul>
+<li>who should take the register</li>
+<li>who took it, and when</li>
+<li>how many pupils were present, late, absent and out of lesson</li>
+</ul>
+<p>Registers still missing are flagged once the period is over. <strong>Download as a spreadsheet (CSV)</strong> gives
+every pupil&#39;s mark, with names.</p>
+<p><strong>What a register row holds:</strong> the date, group, period, the staff code of who took it, and each pupil&#39;s
+code and mark. It holds no names (the Builder puts the names back), no reasons and no notes.</p>
+<p><strong>Lesson registers are not the statutory attendance register.</strong> Your MIS remains the legal register
+of attendance. These are lesson-by-lesson registers for internal monitoring and safeguarding.</p>
+<h2 id="data-protection">Data protection</h2><p>Add the two new tables to your records of processing and DPIA (<a href="data-protection.html">DATA-PROTECTION.md</a>).</p>
+<ul>
+<li><strong>Timetable published</strong> is replaced each time the timetable is published, so it never builds up.</li>
+<li><strong>Timetable register</strong> grows by one row per register taken. Agree with your DPO how long to keep
+registers, for example until the end of the next school year. Then set a <strong>bulk delete</strong> job in the
+Power Platform admin centre (Environments, your environment, Settings, Data management, Bulk
+deletion). For example, delete Timetable register rows whose Register date is before a chosen date,
+each summer. Turning on <strong>Auditing</strong> for the register table records who changed what.</li>
+</ul>
+<h2 id="if-something-is-not-right">If something is not right</h2><table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Staff app: &quot;Not set up yet&quot;</td>
+<td>The Timetable published table is missing, or is named differently. Check step 2.</td>
+</tr>
+<tr>
+<td>Staff app: &quot;Nothing published yet&quot;</td>
+<td>Open the Timetable Builder app once, or choose Update the staff app now.</td>
+</tr>
+<tr>
+<td>Staff app: &quot;No access&quot;</td>
+<td>Give that person the Timetable staff role.</td>
+</tr>
+<tr>
+<td>Staff app asks &quot;Who are you?&quot;</td>
+<td>Their sign-in email does not match their email in the Builder (Setup, Staff). They can still look, but cannot take registers until it matches.</td>
+</tr>
+<tr>
+<td>&quot;Not published: … not allowed to write&quot;</td>
+<td>Give the Timetable editor role Create, Write and Delete on Timetable published.</td>
+</tr>
+<tr>
+<td>Register will not save</td>
+<td>Give the Timetable staff role Create (User) and Write (User) on Timetable register.</td>
+</tr>
+<tr>
+<td>Lesson registers card: &quot;cannot read&quot;</td>
+<td>Give the Timetable editor role Read (Organization) on Timetable register.</td>
+</tr>
+</tbody></table>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

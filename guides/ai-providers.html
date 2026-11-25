@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI providers: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html" aria-current="page">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="the-ai-assistant-connecting-an-ai-service">The AI assistant: connecting an AI service</h1><p>The AI assistant is optional. It is off until someone who can change everything turns it on, and
+the Timetable Builder works fully without it. This guide is for the person who sets it up, usually
+the school&#39;s IT team.</p>
+<h2 id="how-it-works">How it works</h2><pre><code>the app ──► privacy gateway ──► adapter for the chosen service ──► the AI service
+                 │                          │
+   codes only, checked,               builds the request,
+   shown first if you like            reads the answer
+</code></pre>
+<ul>
+<li><strong>The privacy gateway</strong> (<code>aiRun</code> in the app, with <code>src/lib/ai.js</code>) is the only code that sends
+anything to an AI. It builds just the data the action needs, as codes, scans the whole request for
+names, emails, staff codes and notes, and blocks it if it finds one. It can show you the request
+before sending. Answers are checked, retried once if they do not fit, then refused safely. The
+AI log records every request and answer, in codes.</li>
+<li><strong>An adapter</strong> is a small object that turns the app&#39;s standard request into one service&#39;s format,
+and that service&#39;s answer back into the standard answer. Adapters never touch the network.</li>
+</ul>
+<h2 id="before-you-start-the-ai-enabled-copy">Before you start: the AI-enabled copy</h2><p>The app&#39;s security policy stops it connecting to anything except the school&#39;s own sign-in and
+storage. So:</p>
+<ol>
+<li>Open the app, then <strong>Setup</strong>, then <strong>AI assistant</strong>.</li>
+<li>Tick <strong>Use the AI assistant</strong>, choose the service and, if asked, fill in its address.</li>
+<li>Choose <strong>Download the AI-enabled app</strong>. You get a copy, with your timetable inside, that may
+reach that one service and nothing else.</li>
+<li>Open that copy from now on. Enter the key, choose the model and choose <strong>Test the connection</strong>.</li>
+</ol>
+<p>If you change service later, download the AI-enabled copy again.</p>
+<p>The AI assistant section shows these steps numbered, with a <strong>Next:</strong> line saying what to do. The
+key box only appears in the AI-enabled copy: a key typed into another copy would not carry across.</p>
+<p><strong>The key.</strong> Choose <strong>Use for this session</strong> to keep it in memory only (it goes when the window
+closes), or <strong>Remember on this computer</strong> to keep it encrypted with a passphrase of at least 10
+characters. You then type the passphrase once each time you open the app. A key is never put in the
+timetable or the file, and the settings refuse anything that looks like one.</p>
+<p><strong>Who should hold a key?</strong> Anyone who uses a browser with the key in it could use the key. That is
+fine for one timetabler trying the assistant out. For wider use, set up a <strong>relay</strong> (below), so the
+key stays on the school&#39;s server.</p>
+<h2 id="the-services">The services</h2><p>The data notes below describe each provider&#39;s terms as of October 2026. Check the current terms
+before you rely on them, and record your choice in the DPIA (docs/<a href="ai-privacy.html">AI-PRIVACY.md</a>).</p>
+<h3 id="claude-anthropic">Claude (Anthropic)</h3><ol>
+<li>Sign up at platform.claude.com (the Claude Console) and add credit under Billing. Set a spend
+limit.</li>
+<li>Create a workspace for the timetable (for example &quot;Timetable Builder&quot;).</li>
+<li>Go to Settings, API keys (platform.claude.com/settings/keys), choose <strong>Create key</strong>, name it, choose
+an expiry and <strong>select the workspace</strong>. The app does not send a workspace header, so a key that
+is not scoped to a workspace is refused with &quot;must include the anthropic-workspace-id header&quot;.</li>
+<li>Copy the key (it starts <code>sk-ant-</code>). It is shown only once, so keep it in a password manager.</li>
+<li>In the app, choose <strong>Claude (Anthropic)</strong>, download the AI-enabled copy and open it.</li>
+<li>Paste the key and press Enter (or choose <strong>Use for this session</strong>). The models are listed: pick one
+(a smaller model such as Haiku is cheap and works well), then choose <strong>Test the connection</strong>.</li>
+</ol>
+<p>Data: the API does not use your requests to train models by default. Ask Anthropic about zero data
+retention if your DPO wants it. The app sends the header Anthropic requires for direct use from a
+browser.</p>
+<h3 id="openai">OpenAI</h3><ol>
+<li>At platform.openai.com, create a project and an API key. Set a budget limit.</li>
+<li>Choose <strong>OpenAI</strong>, download the AI-enabled copy, open it, paste the key, <strong>Find models</strong>, pick one,
+test.</li>
+</ol>
+<p>Data: API requests are not used for training by default. Zero data retention is available on request.</p>
+<h3 id="google-gemini">Google Gemini</h3><ol>
+<li>In Google AI Studio (or Google Cloud, Generative Language API), create an API key. Restrict it to
+the Generative Language API.</li>
+<li>Choose <strong>Google Gemini</strong>, download the AI-enabled copy, open it, paste the key, <strong>Find models</strong>,
+pick one, test.</li>
+</ol>
+<p>Data: use a paid (billed) project. Free-tier usage may be used to improve Google&#39;s products.</p>
+<h3 id="azure-openai-inside-your-microsoft-tenant">Azure OpenAI (inside your Microsoft tenant)</h3><ol>
+<li>In the Azure portal, create an <strong>Azure OpenAI</strong> resource, ideally in <strong>UK South</strong>, so data stays
+in the UK.</li>
+<li>In Azure AI Foundry, deploy a model and note the <strong>deployment name</strong>.</li>
+<li>In the resource, open <strong>Keys and Endpoint</strong>. Copy the endpoint (like
+<code>https://your-resource.openai.azure.com</code>) and Key 1.</li>
+<li>In the app, choose <strong>Azure OpenAI</strong>, paste the endpoint, download the AI-enabled copy and open it.
+Paste the key, type the deployment name and test.</li>
+</ol>
+<p>Data: covered by your Microsoft agreement. Prompts are not used for training. If the browser cannot
+reach the resource (a CORS or network rule), use a relay in the same tenant.</p>
+<h3 id="local-model-ollama-nothing-leaves-the-building">Local model (Ollama): nothing leaves the building</h3><ol>
+<li>On a computer or server in school, install Ollama and pull a model that follows instructions well
+(for example a recent 8B to 70B model). Bigger models give better timetabling answers.</li>
+<li>Ollama only answers pages it trusts. Your IT team sets the environment variable
+<code>OLLAMA_ORIGINS</code> once:<ul>
+<li>for the app opened as a file: <code>OLLAMA_ORIGINS=null</code></li>
+<li>for the app on a web site: <code>OLLAMA_ORIGINS=https://timetable.your-school.org.uk</code>
+Then restart Ollama. (On a server, also set <code>OLLAMA_HOST=0.0.0.0</code> and limit access with the
+firewall.)</li>
+</ul>
+</li>
+<li>In the app, choose <strong>Local model (Ollama)</strong> and set the address (<code>http://localhost:11434</code>, or the
+server&#39;s address). Download the AI-enabled copy and open it. No key is needed. <strong>Find models</strong>,
+pick one, test.</li>
+</ol>
+<h3 id="the-school-39-s-own-relay-recommended-for-whole-school-use">The school&#39;s own relay (recommended for whole-school use)</h3><p>A relay is a small web service the school runs (for example an Azure Function or a container in the
+school&#39;s tenant). It holds the AI key and calls the AI for the app. The app only knows the relay&#39;s
+address.</p>
+<ul>
+<li>The relay&#39;s address must start <code>https://</code> and <strong>must not carry a secret</strong>. A Power Automate
+trigger address (with <code>sig=</code>) is refused. The relay must check who is calling, for example with
+Microsoft Entra ID authentication, the school network, or a per-user token typed in like a key.</li>
+<li><strong>The relay contract.</strong> The app sends a POST with JSON:<pre><code class="language-json">{ &quot;format&quot;: &quot;tt-ai-1&quot;, &quot;model&quot;: &quot;&quot;, &quot;system&quot;: &quot;…&quot;, &quot;prompt&quot;: &quot;…&quot;, &quot;schema&quot;: { … },
+  &quot;maxTokens&quot;: 4000, &quot;temperature&quot;: 0.2 }
+</code></pre>
+The relay replies with <code>{ &quot;data&quot;: { …the answer, matching the schema… } }</code>. It can also reply
+<code>{ &quot;text&quot;: &quot;…JSON…&quot; }</code>, or <code>{ &quot;error&quot;: { &quot;message&quot;: &quot;…&quot; } }</code> with an error status.
+The relay must allow cross-origin requests from the app&#39;s address (CORS). It may answer with any
+AI service.</li>
+</ul>
+<h2 id="adding-a-new-ai-service-for-developers">Adding a new AI service (for developers)</h2><p>Add one object to <code>ADAPTERS</code> in <code>src/lib/ai.js</code>. Nothing else changes: the settings list,
+security policy, gateway, checks, log and actions all use it automatically.</p>
+<pre><code class="language-js">myservice: {
+  label: &#39;My AI service&#39;,
+  needsKey: true, keyHint: &#39;Where the key comes from&#39;,
+  endpoint: &#39;https://api.myservice.example&#39;, fixedEndpoint: true,   // or endpointHint + checkEndpoint
+  modelHint: &#39;What to type as the model&#39;,
+  origins: cfg =&gt; [&#39;https://api.myservice.example&#39;],      // what the security policy must allow
+  request: (req, cfg, key) =&gt; ({                           // req = { system, prompt, schema, maxTokens, temperature }
+    url: &#39;https://api.myservice.example/v1/chat&#39;,
+    headers: { &#39;content-type&#39;: &#39;application/json&#39;, authorization: &#39;Bearer &#39; + key },
+    body: { model: cfg.model, system: req.system, input: req.prompt, json_schema: req.schema }
+  }),
+  parse: j =&gt; ({ data: parseJson(j.output_text), usage: j.usage, model: j.model }),  // throw friendly errors
+  models: { request: (cfg, key) =&gt; ({ url: &#39;…/models&#39;, headers: { … } }), parse: j =&gt; j.models.map(m =&gt; m.id) }  // or null
+}
+</code></pre>
+<p>Rules for an adapter:</p>
+<ul>
+<li>Build the request and read the answer, nothing else: never call <code>fetch</code> (the gateway does).</li>
+<li>Put the key only in a header, never in the address or the body.</li>
+<li>Return the answer as <code>data</code> (an object). Use <code>parseJson</code> for text answers. Throw an error with
+<code>friendly: true</code> for the service&#39;s own error messages.</li>
+<li>Add a stand-in for the service to <code>tests/fixtures/ai-standin.cjs</code> and its name to the services in
+<code>tests/ai.test.cjs</code>, then run <code>npm test</code>.</li>
+</ul>
+<h2 id="microsoft-copilot-studio-and-power-automate">Microsoft Copilot Studio and Power Automate</h2><p>Not included yet, by choice. The school&#39;s rules do not allow a flow&#39;s trigger address in the app.
+When it is added, it will work in the Power Apps edition through Dataverse rows answered by a flow,
+like the outbox. Meanwhile, a relay in your tenant can call Azure OpenAI or Copilot.</p>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>
