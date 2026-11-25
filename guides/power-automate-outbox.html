@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Power Automate outbox: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html" aria-current="page">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="sending-the-outbox-with-power-automate">Sending the outbox with Power Automate</h1><p>This is for the person who builds flows in Power Automate. It applies to the Power Apps edition,
+where the timetable is kept in Dataverse.</p>
+<p>In the app, <strong>Tell people about changes</strong> (the bell) can put messages in the <strong>outbox</strong>. Each
+message is one row in the Timetable item table, of the kind <code>message</code>. A flow that your school
+owns sends each message from your own Microsoft 365, then marks it as sent, or as not sent with the
+reason. The app shows the result in the bell&#39;s Messages list.</p>
+<p>The app itself never sends email. It keeps no web addresses, passwords or keys for flows. All of
+that lives in the flow, under your school&#39;s control.</p>
+<h2 id="what-a-message-row-holds">What a message row holds</h2><table>
+<thead>
+<tr>
+<th>Column</th>
+<th>What is in it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Item kind (<code>&lt;prefix&gt;_itemkind</code>)</td>
+<td><code>message</code></td>
+</tr>
+<tr>
+<td>Name</td>
+<td>The subject, for example <code>Cover on Tue 27 Oct</code></td>
+</tr>
+<tr>
+<td>Person code (<code>&lt;prefix&gt;_personcode</code>)</td>
+<td>The member of staff&#39;s code</td>
+</tr>
+<tr>
+<td>Person email (<code>&lt;prefix&gt;_personemail</code>)</td>
+<td>Their email address</td>
+</tr>
+<tr>
+<td>Item date (<code>&lt;prefix&gt;_itemdate</code>)</td>
+<td>The date it was put in the outbox</td>
+</tr>
+<tr>
+<td>Item data (<code>&lt;prefix&gt;_itemdata</code>)</td>
+<td>The details, as JSON (see below)</td>
+</tr>
+<tr>
+<td>Timetable code (<code>&lt;prefix&gt;_timetablecode</code>)</td>
+<td>Which timetable it belongs to</td>
+</tr>
+</tbody></table>
+<p>Item data looks like this:</p>
+<pre><code class="language-json">{&quot;id&quot;:&quot;M…&quot;,&quot;code&quot;:&quot;JBR&quot;,&quot;email&quot;:&quot;jo.bray@school.org.uk&quot;,&quot;subject&quot;:&quot;Cover on Tue 27 Oct&quot;,
+ &quot;body&quot;:&quot;Hello Jo,\n\nCover and other duties for you:\n- Tue 27 Oct, P2: 7B …\n\nThank you, Hillside School&quot;,
+ &quot;at&quot;:&quot;2026-10-26T14:02:11.000Z&quot;,&quot;by&quot;:&quot;Sam Office&quot;,&quot;status&quot;:&quot;waiting&quot;}
+</code></pre>
+<p><code>status</code> is <code>waiting</code> when the app adds the message. The flow changes it to <code>sent</code> (with <code>sentAt</code>)
+or <code>failed</code> (with <code>error</code>).</p>
+<h2 id="build-the-flow">Build the flow</h2><ol>
+<li><p>In Power Automate, choose <strong>Create</strong>, then <strong>Automated cloud flow</strong>. Name it <code>Timetable outbox</code>.</p>
+</li>
+<li><p><strong>Trigger:</strong> Microsoft Dataverse, <strong>When a row is added, modified or deleted</strong>.</p>
+<ul>
+<li>Change type: <strong>Added</strong></li>
+<li>Table name: <strong>Timetable items</strong></li>
+<li>Scope: <strong>Organization</strong></li>
+<li>Filter rows: <code>&lt;prefix&gt;_itemkind eq &#39;message&#39;</code> (use your own prefix, for example
+<code>cr4d2_itemkind eq &#39;message&#39;</code>)</li>
+</ul>
+</li>
+<li><p><strong>Parse JSON.</strong></p>
+<ul>
+<li>Content: the trigger&#39;s <strong>Item data</strong>.</li>
+<li>Schema: choose <strong>Use sample payload to generate schema</strong> and paste the example above.</li>
+</ul>
+</li>
+<li><p><strong>Condition:</strong> <code>status</code> (from Parse JSON) is equal to <code>waiting</code>, <strong>and</strong> <code>email</code> is not equal to
+an empty value.</p>
+</li>
+<li><p><strong>If yes:</strong> Office 365 Outlook, <strong>Send an email (V2)</strong>. To send from a shared mailbox such as
+timetable@…, use <strong>Send an email from a shared mailbox (V2)</strong> instead.</p>
+<ul>
+<li>To: <code>email</code> (from Parse JSON)</li>
+<li>Subject: <code>subject</code></li>
+<li>Body: switch to the code view (<code>&lt;/&gt;</code>) and use this expression, which keeps the line breaks:
+<code>replace(body(&#39;Parse_JSON&#39;)?[&#39;body&#39;], decodeUriComponent(&#39;%0A&#39;), &#39;&lt;br&gt;&#39;)</code></li>
+</ul>
+<p>To use Teams instead: Microsoft Teams, <strong>Post message in a chat or channel</strong>, posting as
+<strong>Flow bot</strong> in a <strong>Chat with Flow bot</strong>, with Recipient <code>email</code> and Message <code>body</code>.</p>
+</li>
+<li><p><strong>Mark it sent.</strong> Add Microsoft Dataverse, <strong>Update a row</strong>.</p>
+<ul>
+<li>Table name: <strong>Timetable items</strong></li>
+<li>Row ID: the trigger&#39;s <strong>Timetable item</strong> (the row&#39;s unique identifier)</li>
+<li>Item data, as an expression:
+<code>string(setProperty(setProperty(body(&#39;Parse_JSON&#39;),&#39;status&#39;,&#39;sent&#39;),&#39;sentAt&#39;,utcNow()))</code></li>
+</ul>
+</li>
+<li><p><strong>Mark it not sent if sending fails.</strong> Add a second <strong>Update a row</strong> beside step 6, with the same
+table and Row ID.</p>
+<ul>
+<li>Choose its <strong>…</strong>, then <strong>Configure run after</strong>, and tick <strong>has failed</strong> and <strong>has timed out</strong>
+for the send step.</li>
+<li>Item data:
+<code>string(setProperty(setProperty(body(&#39;Parse_JSON&#39;),&#39;status&#39;,&#39;failed&#39;),&#39;error&#39;,&#39;Could not be sent. Check the address.&#39;))</code></li>
+</ul>
+</li>
+<li><p>Save the flow and turn it on.</p>
+</li>
+</ol>
+<h2 id="check-it">Check it</h2><ol>
+<li>In the app, open the bell and choose <strong>Put in the outbox</strong> for one person.</li>
+<li>Within a minute or two, the flow runs and the email arrives.</li>
+<li>In the app, the bell&#39;s <strong>Messages</strong> list shows <strong>Sent</strong> after its next check for changes, within
+30 seconds or when you come back to the window.</li>
+</ol>
+<h2 id="good-to-know">Good to know</h2><ul>
+<li><strong>Who runs it.</strong> The flow runs as its owner&#39;s connection. Use a service account or a shared
+mailbox the school controls, and share the flow with a second owner so it does not stop when
+someone leaves.</li>
+<li><strong>No loops.</strong> The flow only starts when a message is <strong>added</strong>. Marking it sent is a change, not
+an addition, so it does not run again.</li>
+<li><strong>Clearing the outbox</strong> in the app deletes the rows. That does not start the flow.</li>
+<li><strong>Licences.</strong> The Dataverse connector is a premium connector. A flow that only supports a Power
+Apps app can sometimes be covered by the app&#39;s licences. Check with your licensing admin before
+you rely on it.</li>
+<li><strong>Other editions.</strong> In the single-file, Excel, Microsoft 365 and Google Sheets editions, there is
+no flow. Choose <strong>Download the outbox (CSV)</strong> for a mail merge, or send each message with the
+<strong>Email</strong> or <strong>Teams chat</strong> buttons from your own account.</li>
+<li><strong>Cover without the outbox.</strong> <a href="setup.html">SETUP.md</a> section 8 has two more flows: one that messages people
+when they are given cover, and one that sends a morning summary.</li>
+</ul>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

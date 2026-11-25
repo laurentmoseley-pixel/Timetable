@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pupil Viewer: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html" aria-current="page">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="the-pupil-viewer">The pupil Viewer</h1><p>The pupil Viewer is a very simple, read-only page for <strong>one pupil</strong>. It answers three questions:
+where do I go now, who is my adult, and is anything different?</p>
+<h2 id="what-a-pupil-sees">What a pupil sees</h2><ul>
+<li><strong>Hi</strong> and their first name.</li>
+<li><strong>Now:</strong> the lesson in large letters with its symbol, the room, and each adult as a coloured circle
+with their initials (or a photo, if the school added one) and their name.</li>
+<li><strong>A countdown:</strong> six blocks that empty as the lesson goes on, with words such as &quot;18 minutes until
+Break&quot;.</li>
+<li><strong>Next:</strong> what comes next. Before school it says <strong>First today</strong> and the time. After school it says
+<strong>School has finished</strong> and what tomorrow starts with.</li>
+<li><strong>Today is a bit different</strong> or <strong>Tomorrow is different:</strong> a calm, pale note with short sentences, such
+as &quot;English is with Chloe, not Kezia.&quot; It never says why an adult is away, and nothing is shown in red.</li>
+<li><strong>My whole day:</strong> the day as a list with symbols, ending with Home time, and a button for tomorrow.</li>
+<li><strong>Read to me:</strong> reads the screen aloud. It only uses a voice that is on the device itself, so nothing is
+sent anywhere. If the device has no such voice, the button is not shown.</li>
+<li><strong>Aa:</strong> text size (Normal, Big, Biggest) and letters (Normal, Easy read). Remembered on that device.</li>
+</ul>
+<p>There are no menus, no search and no links. A pupil cannot reach anyone else&#39;s timetable, because it is
+not in the file.</p>
+<h2 id="making-the-files">Making the files</h2><p>In the Timetable Builder: <strong>Setup</strong>, then <strong>Pupil viewer</strong>.</p>
+<ol>
+<li>Choose a pupil and press <strong>Download this pupil&#39;s Viewer</strong>, or press <strong>Download a Viewer for every
+pupil (.zip)</strong> for one file each.</li>
+<li>Give each file only to that pupil: on their own device, or in their own OneDrive or Google Drive.</li>
+<li>Download again when the timetable changes. Each file shows the next school days with any cover (the
+same number as <strong>School days ahead</strong> in Staff viewer, and at least 5), then carries on with the usual
+week.</li>
+</ol>
+<p><strong>Adults are shown as</strong> a first name (Sam) or a full name (Sam Duffy). If two of a pupil&#39;s adults share a
+first name, the first letter of the surname is added (Sam D).</p>
+<h2 id="what-is-in-a-file-and-what-never-is">What is in a file, and what never is</h2><table>
+<thead>
+<tr>
+<th>In the file</th>
+<th>Never in the file</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>The pupil&#39;s first name</td>
+<td>Their surname, code, year or any other detail</td>
+</tr>
+<tr>
+<td>Their own lessons: subject, room, adults, symbol</td>
+<td>Any other pupil&#39;s name, code or lessons</td>
+</tr>
+<tr>
+<td>Adults&#39; names and initials</td>
+<td>Staff codes, emails, roles or notes</td>
+</tr>
+<tr>
+<td>Which adult is covering</td>
+<td>Why anyone is away</td>
+</tr>
+<tr>
+<td>A photo of an adult, only if the school added one and that adult works with this pupil</td>
+<td>Groups, class lists, the cover board, anyone else&#39;s timetable</td>
+</tr>
+</tbody></table>
+<p>If another pupil&#39;s name has been typed into a lesson title or room name, it is taken out of the file.
+The file can reach nothing: its security policy allows no connections at all.</p>
+<p>A file cannot check who opens it. Who can see it depends on where you put it.</p>
+<h2 id="adult-photos-optional">Adult photos (optional)</h2><p>In <strong>Setup, Pupil viewer, Adult photos</strong>: choose the adult, then <strong>Choose a photo</strong>. The picture is cut
+square and made small (120 pixels) before it is kept with the timetable. It goes only into the Viewers
+of pupils that adult works with, and never into the staff Viewer or the workbook. <strong>Remove their photo</strong>
+takes it out. Ask the adult first, and add staff photos to your data protection records
+(<a href="data-protection.html">DATA-PROTECTION.md</a>).</p>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setting up: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html" aria-current="page">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="timetable-builder-in-power-apps-setup-guide">Timetable Builder in Power Apps: setup guide</h1><blockquote>
+<p><strong>No command line?</strong> Use Route A at the end of this guide, or docs/<a href="admin-guide.html">ADMIN-GUIDE.md</a> section 3:
+upload one ready-made file as a web resource. Sections 2 and 3 (the table and permissions) apply
+to both routes. Section 4 below (the code app) needs Node.js and the Power Platform command line.</p>
+</blockquote>
+<p>This guide is for the Power Platform admin and whoever publishes the app. Setup takes
+about an hour the first time: 15 minutes for the table, 15 for permissions, and the rest
+to build, publish and check.</p>
+<p>The app is a Power Apps <strong>code app</strong>. It is the same Timetable Builder as the single-file
+version, but it saves to Dataverse, so several people can work on the same timetable and
+see each other&#39;s changes.</p>
+<hr>
+<h2 id="1-what-you-need">1. What you need</h2><table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Who sorts it</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Power Apps Premium licence (or pay-as-you-go / App Pass)</td>
+<td>Licensing admin</td>
+<td>Only for people who <strong>open</strong> the app, such as timetablers and SLT. Staff who only get Teams or email messages from Power Automate do not need one.</td>
+</tr>
+<tr>
+<td>A Power Platform environment with Dataverse</td>
+<td>Power Platform admin</td>
+<td>Ideally two: a test environment and a live one.</td>
+</tr>
+<tr>
+<td>Code apps switched on in that environment</td>
+<td>Power Platform admin</td>
+<td>Power Platform admin centre → <strong>Manage</strong> → <strong>Environments</strong> → choose the environment → <strong>Settings</strong> → <strong>Product</strong> → <strong>Features</strong> → <strong>Power Apps code apps</strong> → turn on <strong>Enable code apps</strong> → <strong>Save</strong>.</td>
+</tr>
+<tr>
+<td>A computer with Node.js 22 or later</td>
+<td>Publisher</td>
+<td>From nodejs.org. Git is optional.</td>
+</tr>
+<tr>
+<td>Permission to create tables and apps in the environment</td>
+<td>Power Platform admin</td>
+<td>Environment Maker, or System Customizer and above.</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-create-the-table">2. Create the table</h2><p>All the timetable data lives in one table. Each row is one thing: a member of staff, a
+lesson, an absence or a cover choice. The details are in the Item data column. A few
+details are copied into their own columns so that flows and views can use them.</p>
+<ol>
+<li>Go to make.powerapps.com and choose the environment.</li>
+<li><strong>Tables</strong> → <strong>New table</strong> → <strong>Start with a blank table</strong>, or <strong>New table</strong> and then <strong>Set advanced properties</strong>, depending on what your screen shows.</li>
+<li>Display name: <strong>Timetable item</strong>. Plural name: <strong>Timetable items</strong>.</li>
+<li>Keep the primary column as <strong>Name</strong>. Its maximum length must be at least 100.</li>
+<li>Save the table, then add these columns. <strong>Type the display names exactly as shown.</strong> Dataverse turns them into the logical names the app looks for.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Display name</th>
+<th>Data type</th>
+<th>Maximum length</th>
+<th>Logical name ends with</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Item kind</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_itemkind</code></td>
+</tr>
+<tr>
+<td>Item key</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_itemkey</code></td>
+</tr>
+<tr>
+<td>Item date</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_itemdate</code></td>
+</tr>
+<tr>
+<td>Person code</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_personcode</code></td>
+</tr>
+<tr>
+<td>Person email</td>
+<td>Single line of text (Plain text)</td>
+<td>200</td>
+<td><code>_personemail</code></td>
+</tr>
+<tr>
+<td>Item data</td>
+<td>Multiple lines of text (Plain text)</td>
+<td><strong>1,048,576</strong></td>
+<td><code>_itemdata</code></td>
+</tr>
+<tr>
+<td>Timetable code</td>
+<td>Single line of text (Plain text)</td>
+<td>100</td>
+<td><code>_timetablecode</code></td>
+</tr>
+</tbody></table>
+<p>The logical name is shown under <strong>Advanced options</strong> when you create a column, for
+example <code>cr4d2_itemkind</code>. The part before the underscore is your publisher prefix. It
+does not matter what it is, but every column must use the same one.</p>
+<p><strong>Item data is the one that most often goes wrong.</strong> It must be <em>Multiple lines of text</em>
+with the maximum set to 1,048,576. If it is left at the default, saving fails with &quot;A
+value is too long&quot;. The app&#39;s <strong>Check setup</strong> button tests for this.</p>
+<p>Optional, but recommended: turn on <strong>Auditing</strong> for the table (table <strong>Properties</strong> →
+<strong>Advanced options</strong>). That gives a full history of who changed what, on top of the app&#39;s
+own change log.</p>
+<hr>
+<h2 id="3-permissions">3. Permissions</h2><p>Create a security role, for example <strong>Timetable editor</strong>, with <strong>Create, Read, Write,
+Delete, Append and Append To</strong> on the Timetable item table at <strong>Organization</strong> level.
+Give it to everyone who edits timetables.</p>
+<p>For people who should only look, give a role with <strong>Read</strong> only. They can open and print
+timetables. If they change something, the app tells them their account is not allowed to
+save, and nothing is changed for anyone else.</p>
+<p>Every timetable in the environment is visible to everyone with access to the table.</p>
+<hr>
+<h2 id="4-build-and-publish">4. Build and publish</h2><p>Run these in a terminal, in the app&#39;s folder (the folder with <code>package.json</code>):</p>
+<pre><code class="language-bash">npm install
+npx pa auth login
+npx pa app init --environment-id &lt;your-environment-id&gt; --display-name &quot;Timetable Builder&quot;
+npx pa app add data-source --connector dataverse --table &lt;prefix&gt;_timetableitem
+npm run build
+npx pa app push
+</code></pre>
+<ul>
+<li>The environment ID is in the Power Platform admin centre, on the environment&#39;s page.</li>
+<li>In the <code>add data-source</code> line, use your table&#39;s logical name, for example <code>cr4d2_timetableitem</code>.
+This creates <code>src/generated/services/…Service.ts</code>. <strong>Do not rename it or move it.</strong> The app
+finds it by name and works out your prefix from it, so nothing needs editing.</li>
+<li><code>npx pa app push</code> prints the app&#39;s link. Share the app from make.powerapps.com →
+<strong>Apps</strong> → <strong>…</strong> → <strong>Share</strong>, or with <code>npx pa app share</code>.</li>
+</ul>
+<p>To try it on your own computer first, run <code>npx pa app run</code> and open the <strong>Local Play</strong> link it
+prints, in the same browser profile you use for Power Apps.</p>
+<hr>
+<h2 id="5-first-run">5. First run</h2><ol>
+<li>Open the app. It looks for the table, then lists the timetables (none yet).</li>
+<li>Press <strong>Check setup</strong>. It writes, reads back and deletes a test row, and names any column
+that is missing or set up wrongly.</li>
+<li>Press <strong>Start a new timetable</strong>.</li>
+<li>To bring in an existing timetable from the single-file version, choose <strong>File</strong> →
+<strong>Bring in data from a backup</strong>, then pick the old <code>Timetable-builder.html</code>, or a backup
+<code>.json</code> file. Tick everything and choose <strong>Bring in ticked parts</strong>. A large timetable shows
+&quot;Saving 1,200 of 2,000…&quot; while it goes in. Leave the app open until it says
+<strong>All changes saved</strong>.</li>
+</ol>
+<p>From then on, changes save by themselves within a second or so. The status next to Undo
+says <strong>Saving…</strong> or <strong>All changes saved</strong>. If the connection drops, it says
+<strong>Not saved yet, retrying</strong> and keeps your changes until it can save.</p>
+<h3 id="more-than-one-timetable">More than one timetable</h3><p><strong>File</strong> → <strong>Copy this timetable</strong> makes a separate copy, for example to plan next year
+without touching the live one. <strong>File</strong> → <strong>Open another timetable</strong> switches between
+them, and you can delete old copies there.</p>
+<h3 id="two-people-at-once">Two people at once</h3><p>Each person&#39;s app checks for other people&#39;s changes every 30 seconds, and whenever the
+window comes back into view. If something has changed, the timetable refreshes and a
+message says so. It never refreshes while you are typing, or while your own changes are
+still saving. If two people change <strong>the same item</strong> at the same moment, the later save
+wins. Different items never overwrite each other.</p>
+<hr>
+<h2 id="6-check-these-on-the-first-publish">6. Check these on the first publish</h2><p>These all work in testing, but depend on how Power Apps hosts the app in your tenant.
+Try each one once:</p>
+<ul>
+<li><strong>Downloads:</strong> File → Export lessons (CSV), Save a backup file, and Export for iSAMS.</li>
+<li><strong>Printing:</strong> Individual → Print this.</li>
+<li><strong>Uploads:</strong> TimeTabler <code>.HTM</code> exports and CSV sheets. Excel files cannot be read inside
+Power Apps, because it does not let pages load the Excel reader from the internet. Save
+them as CSV instead.</li>
+<li><strong>Two people:</strong> two people open the same timetable. One adds a room. The other should see
+it within 30 seconds.</li>
+</ul>
+<hr>
+<h2 id="7-isams">7. iSAMS</h2><p>Setup → <strong>iSAMS codes and staff emails</strong> holds the codes iSAMS uses: staff codes, pupil
+IDs, subject, room and set codes, year groups and period numbers. The panel lists what is
+missing. <strong>Export for iSAMS</strong> saves three files:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>edval_timetable.csv</code></td>
+<td>One row per lesson period and teacher: Period Id, Set Code, Year level, Subject, Teacher, Room</td>
+</tr>
+<tr>
+<td><code>edval_classes.csv</code></td>
+<td>One row per student per set: Student Id, Course Code, Class Code, Form, Subject, Teacher</td>
+</tr>
+<tr>
+<td><code>…-isams-check.csv</code></td>
+<td>Everything in readable form, to check before importing</td>
+</tr>
+</tbody></table>
+<p>These follow the layout that iSAMS Timetable Manager accepts from the timetabling package
+Edval, as published by Tes. <strong>Before you import into the live timetable:</strong></p>
+<ol>
+<li>Ask your iSAMS administrator which import type they use. If the school currently imports
+from TimeTabler, send a copy of the files TimeTabler last exported for iSAMS. The export
+can then be matched to that layout exactly.</li>
+<li>Check the period numbers against <strong>Manage Periods &amp; Days</strong> in iSAMS.</li>
+<li>Import as a <strong>development timetable</strong> first (Timetable Manager → Import → tick &quot;Mark this
+timetable import as a development timetable&quot;). Fix anything the automatic checks report,
+then make it live.</li>
+</ol>
+<p>Staff emails are not sent to iSAMS. They are for Power Automate (below).</p>
+<hr>
+<h2 id="8-optional-tell-staff-about-cover-with-power-automate">8. Optional: tell staff about cover with Power Automate</h2><p>Every cover choice is its own row, with the covering person&#39;s email in <strong>Person email</strong>
+and the date in <strong>Item date</strong>. That makes notifications straightforward.</p>
+<p><strong>Flow 1: message each person when they are given cover</strong></p>
+<ol>
+<li>Trigger: <strong>Dataverse – When a row is added, modified or deleted</strong>.<ul>
+<li>Change type: <strong>Added or Modified</strong></li>
+<li>Table name: <strong>Timetable items</strong></li>
+<li>Scope: <strong>Organization</strong></li>
+<li>Select columns: <code>&lt;prefix&gt;_personemail</code> (so it only fires when who is covering changes)</li>
+<li>Filter rows: <code>&lt;prefix&gt;_itemkind eq &#39;cover&#39; and &lt;prefix&gt;_personemail ne null</code></li>
+</ul>
+</li>
+<li>Action: <strong>Microsoft Teams – Post message in a chat or channel</strong> (Flow bot → chat with
+<strong>Person email</strong>), or <strong>Office 365 Outlook – Send an email (V2)</strong> to <strong>Person email</strong>.</li>
+<li>Message: use <strong>Name</strong> (for example &quot;Cover 7B P3 Maths for Jo Bray&quot;) and <strong>Item date</strong>.</li>
+</ol>
+<p><strong>Flow 2: a morning summary for each person</strong></p>
+<ol>
+<li>Trigger: <strong>Recurrence</strong>, weekdays at 7.30.</li>
+<li><strong>Dataverse – List rows</strong> on Timetable items, filter
+<code>&lt;prefix&gt;_itemkind eq &#39;cover&#39; and &lt;prefix&gt;_itemdate eq &#39;@{formatDateTime(utcNow(),&#39;yyyy-MM-dd&#39;)}&#39;</code>.</li>
+<li>Group by <strong>Person email</strong> and send each person their list.</li>
+</ol>
+<p>Absences (<code>itemkind eq &#39;absence&#39;</code>), student absences (<code>stuabs</code>) and extra-staffing
+requests (<code>extra</code>) can be used the same way.</p>
+<hr>
+<h2 id="9-updating-the-app-later">9. Updating the app later</h2><p>Make the change, then run <code>npm run build</code> and <code>npx pa app push</code> again. The data stays in
+Dataverse and is not touched by a new version.</p>
+<p>To make the single-file version from the same code, run <code>npm run standalone</code>. It is
+written to <code>dist-standalone/Timetable-builder.html</code>.</p>
+<hr>
+<h2 id="10-troubleshooting">10. Troubleshooting</h2><table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What it means</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;Demo mode&quot; on the opening screen</td>
+<td>The app could not find the generated Dataverse service</td>
+<td>Run the <code>npx pa app add data-source</code> step, then <code>npm run build</code> and <code>npx pa app push</code></td>
+</tr>
+<tr>
+<td>&quot;Dataverse has no column called …&quot;</td>
+<td>A column name does not match</td>
+<td>Rename it, or delete and recreate it with the display name in section 2</td>
+</tr>
+<tr>
+<td>&quot;A value is too long…&quot;</td>
+<td>Item data is not set to 1,048,576 characters</td>
+<td>Change the column&#39;s maximum length</td>
+</tr>
+<tr>
+<td>&quot;Your account is not allowed…&quot;</td>
+<td>No security role on the table</td>
+<td>Give the Timetable editor role (section 3)</td>
+</tr>
+<tr>
+<td>&quot;Not saved yet, retrying&quot; for a long time</td>
+<td>No connection to Dataverse</td>
+<td>Changes are kept and saved when the connection returns. Do not close the app until it says All changes saved</td>
+</tr>
+<tr>
+<td>&quot;Not saving: setup problem&quot;</td>
+<td>One of the above</td>
+<td>Fix it, then press <strong>Save now</strong></td>
+</tr>
+</tbody></table>
+<p>To troubleshoot, open the browser&#39;s developer tools console and type
+<code>__TT_DEBUG__.host._debug()</code>. It shows the number of rows held, the last check time and any
+error.</p>
+<hr>
+<h2 id="what-is-where">What is where</h2><table>
+<thead>
+<tr>
+<th>Path</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>src/app.js</code></td>
+<td>The Timetable Builder itself, shared by both versions</td>
+</tr>
+<tr>
+<td><code>src/shell.html</code>, <code>src/styles.css</code>, <code>src/seed.json</code></td>
+<td>Its screens, look and starting subjects</td>
+</tr>
+<tr>
+<td><code>src/main.js</code></td>
+<td>Starts the Power Apps version: opening screen, timetable list, setup check</td>
+</tr>
+<tr>
+<td><code>src/dataverse/rows.js</code></td>
+<td>How a timetable is split into rows and put back together</td>
+</tr>
+<tr>
+<td><code>src/dataverse/store.js</code></td>
+<td>Saving, retrying and picking up other people&#39;s changes</td>
+</tr>
+<tr>
+<td><code>src/dataverse/adapter.js</code></td>
+<td>Finds the generated Dataverse service and talks to it</td>
+</tr>
+<tr>
+<td><code>src/dataverse/mock.js</code></td>
+<td>A stand-in table in the browser, for demo mode and testing</td>
+</tr>
+<tr>
+<td><code>tools/build-standalone.mjs</code></td>
+<td>Builds the single-file version</td>
+</tr>
+<tr>
+<td><code>tests/</code></td>
+<td>Automated tests (<code>npm test</code>; needs Playwright: <code>npm install --no-save playwright &amp;&amp; npx playwright install chromium</code>)</td>
+</tr>
+</tbody></table>
+<h2 id="route-a-no-command-line-web-resource">Route A: no command line (web resource)</h2><p><code>npm run build:single</code> makes <code>dist-single/index.html</code>, one self-contained file. Upload it to
+Dataverse as a web resource (Webpage (HTML)) and add it to a model-driven app as a Web
+resource page. When served by Dataverse, the app talks to the Web API directly
+(<code>src/dataverse/webapi.js</code>): it finds the table whose logical name ends in <code>_timetableitem</code>,
+uses the signed-in user&#39;s session, and needs nothing else set up. The same file also runs as
+the Claude-hosted demo (shared store) and, opened on its own, in browser-only demo mode.
+Tests: <code>node tests/webresource.test.cjs dist-single/index.html</code> (stand-in Web API).</p>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

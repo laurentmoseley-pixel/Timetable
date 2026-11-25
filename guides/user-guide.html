@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User guide: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html" aria-current="page">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="timetable-builder-user-guide">Timetable Builder: user guide</h1><p>This guide is for the people who build the timetable and run the day: timetablers, senior leaders,
+and office staff who arrange cover. The same help is inside the app: choose <strong>Help</strong> in the status
+bar at the bottom, or press <strong>Ctrl K</strong> and type <em>help</em>.</p>
+<h2 id="the-screen">The screen</h2><ul>
+<li><p><strong>Home</strong> is the page the app opens on. <strong>To do</strong> lists what needs you today, each with one button
+that goes straight to the job: lessons nobody covers (<strong>Find cover</strong>), clashes (<strong>Show me</strong>), lessons
+still to place (<strong>Place them</strong>), staff below your minimums, unsaved work and backups. Below it are the
+headline numbers (staff away, cover, problems, teaching load, rooms in use), safety and staffing
+through the day, cover so far this term, and quick jobs. Home only shows things; nothing on it
+changes the timetable.</p>
+</li>
+<li><p><strong>The menu on the left:</strong></p>
+<ul>
+<li><strong>Home</strong></li>
+<li><strong>Plan</strong>: Timetable (was Build), Auto build, What if (was Scenarios), Insights</li>
+<li><strong>Run the day</strong>: Staff day, Today, Cover</li>
+<li><strong>Look up</strong>: People and rooms (Staff, Students and Rooms, with a switch at the top), Reports</li>
+<li><strong>More</strong> (click to open; it stays open until you close it): Subject choices (was Options), Rest
+days and on call (was Rota), Transport, One person (was Individual)</li>
+<li><strong>Set up</strong>: Setup</li>
+</ul>
+<p>Search (<strong>Ctrl K</strong>) still finds pages by their old names.</p>
+</li>
+<li><p><strong>Take the tour</strong> (on Home, or File, Help) shows where everything is in seven short steps. Escape ends it.</p>
+</li>
+<li><p>After each save, the status at the top shows a <strong>Saved</strong> tick for a moment. Hover over Save, Undo or
+Search to see their keyboard shortcuts; press <strong>?</strong> for the full list. On a phone, the menu is a bar along the
+bottom.</p>
+</li>
+<li><p><strong>The header</strong> shows:</p>
+<ul>
+<li>the page you are on</li>
+<li>search (<strong>Ctrl K</strong>), to jump to any page, person, class or job</li>
+<li>where the timetable is kept</li>
+<li>the bell, for telling people about changes</li>
+<li>Undo and Redo, Save, and the <strong>File</strong> menu</li>
+</ul>
+</li>
+<li><p><strong>The status bar</strong> at the bottom shows:</p>
+<ul>
+<li>whether your work is saved</li>
+<li>any problems to put right, and the quality score (click it for Checks)</li>
+<li>how big the timetable is</li>
+<li>Help</li>
+</ul>
+</li>
+<li><p><strong>Appearance:</strong> File menu, then Light, Dark, High contrast or Automatic. There is also an
+easier-to-read font.</p>
+</li>
+<li><p><strong>Look (trial):</strong> File menu, then Classic or Future. Future is a new look: glass panels, a soft
+background light, glowing highlights and monospace times. It changes how the app looks, not what
+it does. It works with Light, Dark and Automatic; High contrast always uses the plain style, and so
+do printouts. <strong>Reduce effects</strong> (next to it) turns off the glass, glow and movement. Your choice is
+remembered on this computer.</p>
+</li>
+</ul>
+<h2 id="starting">Starting</h2><p>A new, empty timetable opens with a <strong>welcome screen</strong>:</p>
+<ul>
+<li><strong>Look around with a demo school.</strong> A made-up school, to try everything. Choose <strong>Start my own
+timetable</strong> when you are ready.</li>
+<li><strong>Set up my school, step by step.</strong> Name the school and timetable, choose the school days, and
+set how many lessons there are, how long they are, and when break and lunch fall.</li>
+<li><strong>Bring in what we have.</strong> An Excel workbook, the Excel template filled in, TimeTabler exports,
+or a backup file.</li>
+</ul>
+<p>Then, in <strong>Setup</strong>, add staff, pupils, groups (classes and sets), subjects and rooms. You can type
+them, paste a list, or bring in the CSV templates. The <strong>Getting started</strong> list on the Today page
+shows what is left to do.</p>
+<h2 id="building-the-timetable">Building the timetable</h2><ul>
+<li><p><strong>Timetable</strong> shows one row per group and one column per period. Click a slot to add or change a
+lesson in the editor on the right.</p>
+</li>
+<li><p><strong>Drag</strong> a lesson to move it. Hold <strong>Ctrl</strong> to copy it. While you drag, the group&#39;s row shows:</p>
+<ul>
+<li><strong>green</strong> where it fits</li>
+<li><strong>amber</strong> where it fits but replaces a lesson or repeats the subject that day</li>
+<li><strong>red</strong> where it would break a rule</li>
+</ul>
+<p>If you drop it where it breaks a rule, the app asks first.</p>
+</li>
+<li><p><strong>Alt and the arrow keys</strong> move the chosen lesson a period or a day at a time.</p>
+</li>
+<li><p>In the lesson editor:</p>
+<ul>
+<li><strong>Where it fits</strong> lists every free slot.</li>
+<li><strong>Fix it for me</strong> finds the best place, moving as little as possible, and shows the changes
+before making them.</li>
+</ul>
+</li>
+<li><p><strong>Lock</strong> a lesson that must never move.</p>
+</li>
+<li><p><strong>Auto build</strong>:</p>
+<ul>
+<li>Give each group a <strong>weekly plan</strong>: how many lessons of each subject, double or single, which days
+and times.</li>
+<li><strong>Build the whole timetable</strong> then fills the gaps, improves what is there, or rebuilds from the
+plans. It runs in the background, keeps to the rules, and shows the result before anything
+changes. <strong>Undo</strong> puts it back.</li>
+</ul>
+</li>
+<li><p><strong>Subject choices</strong> (under More; was Options) builds option blocks, where pupils split into the subjects they chose.</p>
+</li>
+</ul>
+<h3 id="two-lessons-in-one-period-halves">Two lessons in one period (halves)</h3><p>A class can have two lessons in one period, one after the other: for example Reading, then Regulation.
+The bell times do not change.</p>
+<ul>
+<li>In the lesson editor, <strong>Part of the period</strong>: <strong>All of it</strong>, <strong>First half</strong> or <strong>Second half</strong>.</li>
+<li>Or drag one lesson onto another and choose <strong>One after the other</strong>. The lesson that was there becomes
+the first half.</li>
+<li>To set several at once, select them and choose <strong>First half</strong> or <strong>Second half</strong> in the editor.</li>
+</ul>
+<p>Two halves of a period never clash, even with the same staff, students and room. The Timetable grid shows
+<strong>1st half</strong> and <strong>2nd half</strong>. The staff Viewer shows First half and Second half, and the Lessons sheet of the
+workbook has a <strong>Half</strong> column.</p>
+<h3 id="adding-a-lesson-to-an-empty-slot">Adding a lesson to an empty slot</h3><p>Click the empty slot. The lesson editor shows up to three <strong>Suggested</strong> lessons: the subjects this class
+usually has at that time on other days (or, failing that, the ones it has most), each with the adults and
+room it usually has, <strong>if they are free then</strong>. Click one to add it, with the class&#39;s student list. Or pick
+any subject below the suggestions, as before.</p>
+<h3 id="a-long-lesson-for-one-pupil-alongside-the-group">A long lesson for one pupil, alongside the group</h3><p>Click the first period, add the lesson (or click it if it is there), and set <strong>Length</strong>. Length goes up to
+the end of the day. If the later periods already have lessons, you are asked:</p>
+<ul>
+<li><strong>Keep both, for some pupils:</strong> it runs alongside the group&#39;s lessons and starts with nobody on it.
+Add the pupil (for example one pupil all day, periods 1 to 8).</li>
+<li><strong>Keep both, with the whole group:</strong> it runs alongside, with the same pupils.</li>
+<li><strong>Replace them:</strong> the lessons at those times go, as before. Undo brings them back.</li>
+</ul>
+<p>If a pupil on it is also on another of the group&#39;s lessons at those times, the editor says so, with
+<strong>Take them off the other lessons</strong>.</p>
+<p><strong>Copying it to other days or slots</strong> (Copy this … to other slots, or Copy the selection to other days)
+asks what to do if a slot already has a lesson:</p>
+<ul>
+<li><strong>Replace it</strong> (as before)</li>
+<li><strong>Keep both: run alongside it</strong></li>
+<li><strong>Keep both, and take these pupils off the other lesson there</strong></li>
+</ul>
+<p>A lesson for part of the group starts on the last one, so the group&#39;s lessons stay and the pupil moves.
+A whole-group lesson starts on Replace. Paste (Ctrl+V) still replaces; drag and drop asks.</p>
+<h3 id="editing-on-people-and-rooms">Editing on People and rooms</h3><p>You don&#39;t need to go to the whole Timetable to change one person&#39;s lessons. On <strong>People and rooms</strong>
+(Staff, Students or Rooms):</p>
+<ul>
+<li><strong>Click a lesson</strong> to open the lesson editor beside the grid. Changes are made there, on that page. The
+lesson is outlined on everyone who is in it.</li>
+<li><strong>Click an empty slot</strong> to add a lesson for that person or room:<ul>
+<li><strong>Students:</strong> the lesson goes in the pupil&#39;s class with only that pupil on it, alongside whatever the
+class has then. Nothing of the class&#39;s is replaced. Pick a subject, then add staff and a room.</li>
+<li><strong>Staff and Rooms:</strong> choose the class first (the classes they are most often with come first), then a
+subject. They go on it as staff, or it goes in that room.</li>
+</ul>
+</li>
+<li><strong>Right-click a lesson</strong> for the quick menu (Edit, Swap, Change room, Copy, Lock, Delete).</li>
+<li><strong>Open in Timetable</strong> in the editor shows the same slot in the whole Timetable.</li>
+<li>Click a name for their whole timetable, as before.</li>
+</ul>
+<h3 id="reading-the-grid">Reading the grid</h3><ul>
+<li><strong>Hover</strong> over a lesson (or tab to it) for a card with all of it: subject, when, group, room, staff by
+name and students.</li>
+<li><strong>Compact</strong> or <strong>Comfortable</strong> (above the grid) sets how big each lesson is. Compact fits more on
+screen; Comfortable has bigger text. Your choice is remembered on that computer.</li>
+<li><strong>Colour key and tips</strong> (above the grid) opens the colour key and the tips for selecting, moving and
+copying.</li>
+</ul>
+<h3 id="the-quick-menu-on-a-lesson">The quick menu on a lesson</h3><p>Right-click a lesson on the Timetable grid (or press <strong>Shift+F10</strong> on the chosen lesson, or press and hold it on a
+touch screen) for: <strong>Edit</strong>, <strong>Swap or replace a member of staff</strong>, <strong>Change room</strong>, <strong>Copy to other slots</strong>,
+<strong>No staff needed</strong>, <strong>Lock</strong> or <strong>Unlock</strong>, and <strong>Delete</strong>. Undo works for all of them.</p>
+<p>In the lesson editor, the <strong>Room</strong> list puts the rooms that are free at that time first, and says how many are
+free. Rooms in use say what is in them. The <strong>Add staff</strong> list already puts free people first.</p>
+<h3 id="dragging-lessons">Dragging lessons</h3><p>Drag a lesson to move it; hold <strong>Ctrl</strong> (or Alt) to copy it.</p>
+<ul>
+<li><strong>To an empty slot:</strong> it moves. If it lands next to the same subject for the same pupils, you can also
+join the two into a double.</li>
+<li><strong>Onto another lesson:</strong> a menu asks what to do.<ul>
+<li><strong>Swap places</strong>: the two lessons change places.</li>
+<li><strong>Merge into...</strong>: one lesson, the one already there, with both sets of staff and students.</li>
+<li><strong>One after the other</strong>: a half each.</li>
+<li><strong>Keep both at the same time</strong>: for a 1:1 or a split group beside it.</li>
+<li><strong>Replace</strong>: the lesson already there is deleted.</li>
+<li><strong>Cancel</strong>, or press Escape.</li>
+</ul>
+</li>
+<li><strong>Onto another lesson in the same period</strong> (for example one of three 1:1s): <strong>Merge into</strong> makes them one
+lesson, or <strong>One after the other</strong> gives each half the period. To merge every lesson in a period, open
+one and choose <strong>Merge these ... into one</strong>; for many periods, select them and choose <strong>Merge each period
+into one lesson</strong>.</li>
+<li><strong>Into another class&#39;s row:</strong> a whole-class lesson takes that class&#39;s list.</li>
+</ul>
+<p>Anything that breaks a rule asks first. <strong>Undo</strong> puts any of these back.</p>
+<h3 id="classes-with-more-than-one-lesson-in-a-period">Classes with more than one lesson in a period</h3><p>A class can have more than one lesson at once: a 1:1 beside the group, or the group split in two. When
+you change a whole week (click a class&#39;s name on the Timetable grid to select its week, or use <strong>Add to class
+team and all its lessons</strong>), the app keeps those lessons apart:</p>
+<ul>
+<li>Someone added to all the lessons goes in one lesson per period: the main one, with most students.
+Nobody is put in two lessons at once, and the app says where the class was split.</li>
+<li><strong>Set to class list</strong> leaves pupils in their 1:1 or small group; the main lesson gets the rest.</li>
+<li>Copying to other days copies every lesson in each period, and <strong>Join into one block</strong> joins each group
+of students with itself.</li>
+</ul>
+<h3 id="adding-someone-to-all-of-a-class-39-s-lessons">Adding someone to all of a class&#39;s lessons</h3><p>In <strong>Setup, Staff</strong>, tick the person (or several people), choose the class in the list, then choose <strong>Add to class team and all its lessons</strong>. They go on every
+lesson of that class and join its team. <strong>Team only</strong> adds them to the team without changing lessons.
+In <strong>Auto build</strong>, each member of a class&#39;s <strong>Staff team</strong> shows how many of its lessons they are on,
+with <strong>Put on all its lessons</strong>. <strong>Take off all its lessons</strong> does the opposite. If they are already teaching somewhere else at one of
+those times, the app says how many clash; <strong>Checks</strong> lists them.</p>
+<h3 id="taking-someone-off-the-timetable-or-swapping-them">Taking someone off the timetable, or swapping them</h3><p>The quickest way is <strong>Swap or replace a person</strong>. Open it from Home (Quick jobs), from <strong>One person</strong> (when it
+shows a member of staff), from a lesson&#39;s quick menu, or by searching (<strong>Ctrl K</strong>). Then:</p>
+<ol>
+<li><strong>Who comes off.</strong> Type part of a name and choose them. From a lesson, its adults are listed.</li>
+<li><strong>Which lessons.</strong> This lesson only, all of that class&#39;s lessons, or all their lessons.</li>
+<li><strong>Who goes on instead.</strong> People who are free for every one of those lessons come first, marked <strong>Free</strong>.
+Others say how many they are busy for. <strong>Nobody</strong> just takes the person off.</li>
+</ol>
+<p>Before you confirm, it says what will happen. If the new person is teaching or not working at some of those
+times, it says <strong>&quot;3 of these clash&quot;</strong>, names them, and offers to <strong>leave those with</strong> the person coming off,
+so nothing clashes. Swapping all of a person&#39;s lessons also swaps their class team places. Undo puts it
+all back.</p>
+<p>The older way still works, in <strong>Setup, Staff</strong>:</p>
+<ul>
+<li><strong>Take off every lesson</strong>: tick the person (or several), then choose it. They come off every lesson and
+every class team, but stay on the staff list. The app asks first.</li>
+<li><strong>Swap on all their lessons</strong>: tick the person leaving, choose who takes over in <strong>Swap for…</strong>, then
+choose it. The new person gets every one of their lessons and their class team places. If the new person
+is already teaching at some of those times, the app says how many clash; <strong>Checks</strong> lists them.</li>
+</ul>
+<p>Both can be undone.</p>
+<h3 id="blocked-time-ppa-ect-time-meetings-and-more">Blocked time: PPA, ECT time, meetings and more</h3><p>Blocked time is part of a person&#39;s usual week that is not a lesson: <strong>PPA</strong>, <strong>ECT time</strong>, a <strong>Meeting</strong>,
+<strong>Maintenance</strong>, or <strong>Other</strong>.</p>
+<ul>
+<li>No lesson is placed there. Auto build keeps lessons off it, the lesson editor and suggestions don&#39;t offer
+that person then, and a lesson already there is listed in <strong>Checks</strong> to move.</li>
+<li>It never needs cover when they are away, and they are not asked to cover during it.</li>
+<li>Their timetable shows the type (PPA, Meeting and so on) in the staff Viewer, on Staff day and on printouts.
+The note is only seen in the Builder.</li>
+</ul>
+<p><strong>To add it for several people at once</strong>, use <strong>Setup, Blocked time</strong>. Choose who (one or more people, or
+Everyone, All teachers, or All TAs and support staff), what it is, an optional note, and the days and
+periods. Then choose <strong>Block out this time</strong>. The list below shows all blocked time, with <strong>Remove</strong>.</p>
+<p><strong>To add it for one person</strong>, open <strong>People and rooms, Staff</strong> and click an empty slot. Choose <strong>Block out:
+PPA</strong> (or another type). Click a blocked slot to change its type, repeat it at that time every day, or
+remove it. Undo works for all of these.</p>
+<p>In the Excel workbook, the Staff sheet has a <strong>Blocked time</strong> column, for example
+<code>Wed P6 Meeting (Phase meeting); Fri P2 PPA</code>.</p>
+<h3 id="students-with-no-staff">Students with no staff</h3><p><strong>Checks</strong> flags any lesson with students on it and no staff, and the Timetable grid marks it red. If the
+lesson does not need staff (college, work experience, an off-site placement), tick <strong>No staff needed for
+this lesson</strong> in the lesson editor, or <strong>No staff needed for any ... lesson</strong> for every lesson of that
+subject. Checks has the same two buttons by each lesson, and <strong>Setup, Subjects</strong> has a <strong>No staff needed</strong>
+column.</p>
+<h3 id="tidying-names-one-name-for-one-thing">Tidying names (one name for one thing)</h3><p>When the same thing has several names, reports and searches split it up.</p>
+<ul>
+<li><strong>Setup, Subjects</strong> shows <strong>Names that look like the same thing</strong>. It finds every alternative provision
+name (Alt Provision, Alternative Provision, AP - ...), offsite names, reduced timetable names, 1:1 names, and
+names that differ only in capitals or punctuation. Untick any that are something different, check the
+name in <strong>Merge as</strong> and the start of the titles in <strong>Titles start with</strong> (AP: or Offsite: to begin with),
+then choose <strong>Merge the ticked ones</strong>. Each lesson keeps which provision it is in its title, for example
+AP - Player Ready becomes Alternative provision, titled <strong>AP: Player Ready</strong>.</li>
+<li>To merge any subjects yourself, tick them in the Subjects list, type the name, and choose <strong>Merge into
+one</strong>. <strong>Keep old names as lesson titles</strong> (the default) keeps the detail, after whatever you type in
+<strong>Titles start with</strong>: with AP: typed, AP - Player Ready becomes Alternative provision, titled AP: Player
+Ready. Generic names (Alt Provision, Off Site) get no title, as they say nothing extra.</li>
+<li><strong>Setup, Rooms</strong> has <strong>Merge into one</strong> too, for example Offsite_RSPCA into Offsite Provision.</li>
+<li>In <strong>Reports, Who is doing what</strong>, <strong>Change all of these lessons</strong> gives every lesson the search found one
+subject or one title.</li>
+</ul>
+<p>Everything that used the old names follows: lessons, plans, options, specialisms and iSAMS codes. Undo
+puts it back.</p>
+<h3 id="who-is-doing-what-reports">Who is doing what (Reports)</h3><p>At the top of <strong>Reports</strong>, type what to look for, or choose a button: <strong>Reduced timetable</strong>, <strong>Alternative
+provision</strong>, <strong>Off site</strong>, <strong>1:1</strong>, <strong>College</strong> or <strong>Not on site</strong>. It searches every lesson&#39;s subject, title, room
+and group in the usual week, and lists:</p>
+<ul>
+<li>each student on those lessons, their group, how many periods a week and when</li>
+<li>each member of staff, how many periods a week and when</li>
+<li>every matching lesson (open <strong>Every lesson</strong>)</li>
+</ul>
+<p><strong>Download as a spreadsheet (CSV)</strong> saves the lessons with their staff and students. Words match loosely:
+&quot;alternate provision&quot;, &quot;Alt Provision&quot; and &quot;AP - Equine&quot; are all found by Alternative provision, and
+&quot;Reduced TT&quot; by Reduced timetable. The report holds pupils&#39; names, so keep printouts and downloads secure.</p>
+<h3 id="more-than-one-site">More than one site</h3><p>For a school on several sites, give each room its <strong>Site</strong> in <strong>Setup, Rooms</strong>, and set <strong>Minutes to
+move between sites</strong> (in the <strong>Checks</strong> window, or on the School sheet of the workbook). Then:</p>
+<ul>
+<li><strong>Timetable</strong> puts each site&#39;s classes together under a heading with the site&#39;s name and colour.<ul>
+<li>The <strong>Site</strong> menu on the toolbar shows one site at a time. Clicking a site heading does the same;
+clicking it again shows all sites.</li>
+<li>Untick <strong>Group by site</strong> for the usual order; each row then says its site under the class name.</li>
+<li>A lesson in a room on another site from its class shows that site&#39;s name, such as <strong>South</strong>.</li>
+</ul>
+</li>
+<li>A class is based on the site of the rooms most of its lessons are in. To set it yourself, type it in
+the <strong>Site</strong> column of <strong>Setup, Classes and groups</strong>, or on the <strong>Groups</strong> sheet of the workbook.</li>
+<li><strong>Rooms</strong> shows each room&#39;s site under its name.</li>
+<li>The lesson editor&#39;s room list names the site of any room on another site.</li>
+<li>The rule <strong>not enough time to move between sites</strong> still flags staff and pupils who would have to
+move between sites without enough time.</li>
+</ul>
+<p>A school on one site sees none of this.</p>
+<h3 id="printing-a-timetable-for-one-person">Printing a timetable for one person</h3><p>Open <strong>More</strong>, then <strong>One person</strong>. Choose staff or students and the look, then <strong>Print</strong> (this person) or
+<strong>Print all</strong>. Each person&#39;s timetable prints on <strong>one A4 landscape page</strong>. If a week is very full, it is
+printed slightly smaller, only as much as it needs; nothing is left out. The visual Day look still prints a
+page for each day.</p>
+<p><strong>Show: Staff, Pupils</strong> (Standard look) chooses whether each lesson lists the staff and the pupils on it.
+Staff are shown and pupils hidden to begin with. On a student&#39;s timetable, ticking Pupils lists the other
+pupils in each lesson, and the page warns that this copy is not for giving to the pupil. Printing follows
+your choice, and it is remembered on this computer. The visual looks have their own choices.</p>
+<p><strong>Site</strong> (for a school on more than one site) shows, and prints with Print all, only the groups, rooms, staff
+or pupils on that site. Someone who works on two sites is on both.</p>
+<h3 id="printing-the-whole-timetable">Printing the whole timetable</h3><p><strong>Print the whole timetable…</strong> (on One person, on Reports, or Ctrl K) prints one sheet with a row for each
+group, member of staff or room, and every period of the week across the page, like a master timetable.</p>
+<ul>
+<li><strong>One row for each:</strong> group, member of staff, or room.</li>
+<li><strong>Site:</strong> all sites, <strong>Each site on its own pages</strong>, or one site.</li>
+<li><strong>In each lesson:</strong> staff codes, room, and subject colours, each on or off.</li>
+<li><strong>Paper:</strong> A4 or A3 landscape (it suggests A3 when there are more than 30 periods a week). For A3, choose
+A3 in the printer settings too.</li>
+</ul>
+<p>Rows carry on to the next page, with the days and periods repeated at the top. A key at the end explains
+the subject and staff codes. For staff, blocked time shows its type (PPA, Meeting) and times they don&#39;t
+work show Off. Your choices are remembered on this computer.</p>
+<p><strong>Order</strong> sorts the list, and Print all, by surname (the default) or first name, A to Z, or as in the
+list. Your choice is remembered on this computer.</p>
+<h3 id="checks-and-the-quality-score">Checks and the quality score</h3><p>The <strong>Checks</strong> button, or the status bar, opens the Checks window.</p>
+<p><strong>Rules broken</strong> must be put right:</p>
+<ul>
+<li>someone in two places at once</li>
+<li>staff timetabled when they do not work</li>
+<li>a room that is too small, or the wrong kind of room</li>
+<li>a group short of adults for its ratio</li>
+<li>pupils who must be kept apart taught together</li>
+<li>not enough time to move between sites</li>
+</ul>
+<p><strong>The quality score</strong> (out of 100) shows how well the timetable meets the school&#39;s preferences.
+You choose how much each part counts:</p>
+<ul>
+<li>subjects spread across the week</li>
+<li>core subjects in the morning</li>
+<li>no empty periods in a group&#39;s day</li>
+<li>no long gaps in a teacher&#39;s day</li>
+<li>few room changes</li>
+<li>difficult slots shared fairly</li>
+<li>key adults with their pupils</li>
+</ul>
+<h3 id="snapshots-and-scenarios">Snapshots and scenarios</h3><ul>
+<li><strong>Snapshots</strong> (File menu) keep a copy of the lessons to compare with later or go back to. One is
+taken automatically before big changes.</li>
+<li><strong>What if</strong> (was Scenarios) keeps scenarios: full working copies of the timetable, for trying ideas such as setting Year 9,
+or a teacher going part-time:<ul>
+<li>Open one, and every planning tool works on the copy. The real timetable, cover and the
+day-to-day pages are not affected.</li>
+<li>Compare up to three scenarios with the real timetable, then <strong>Use as the real timetable</strong>.
+Undo works.</li>
+</ul>
+</li>
+</ul>
+<h3 id="insights">Insights</h3><p><strong>Insights</strong> shows:</p>
+<ul>
+<li>the headline numbers</li>
+<li>each person&#39;s <strong>workload</strong>, against the most they should teach</li>
+<li>how many staff are <strong>free to cover</strong> in each period</li>
+<li><strong>rooms</strong> in use</li>
+<li><strong>groups</strong> against their weekly plans</li>
+<li><strong>pupils with no lesson</strong></li>
+<li>whether <strong>cover is shared fairly</strong> this term</li>
+</ul>
+<p>Each part downloads as a spreadsheet.</p>
+<p><strong>Print the meeting pack</strong> (on Reports, in Home&#39;s Quick jobs, or through Ctrl K) prints one report for an
+SLT meeting in a single click:</p>
+<ol>
+<li><strong>Staffing load:</strong> each person&#39;s periods a week, free periods, longest run and days with no break</li>
+<li><strong>Cover:</strong> how many each person has covered this term, against the average</li>
+<li><strong>Room use:</strong> how much of the week each room is used</li>
+<li><strong>Problems:</strong> clashes, rules broken, warnings and lessons still to place</li>
+</ol>
+<p>It names staff only; there is no pupil data in it.</p>
+<h2 id="running-the-day">Running the day</h2><ul>
+<li><strong>Cover</strong>:<ul>
+<li><p>Mark who is off: a whole day, part of a day, or several days.</p>
+</li>
+<li><p>The buttons along the top:</p>
+<ul>
+<li><strong>Cover this day</strong> chooses cover for every lesson that needs it on the day shown. Cover already
+chosen stays.</li>
+<li><strong>Print or copy</strong> has Print who is covering, Copy who is covering, Print cover slips and Print
+full cover sheets.</li>
+<li><strong>Several days, redo or clear</strong> opens the date range with <strong>Cover these days</strong>, <strong>Redo automatic
+cover</strong> and <strong>Clear cover choices</strong> (which asks first).</li>
+</ul>
+</li>
+<li><p>Automatic cover chooses fairly, in this order:</p>
+<ol>
+<li>people called in</li>
+<li>people who can take a colleague&#39;s whole day</li>
+<li>people on call</li>
+<li>whoever has covered least</li>
+</ol>
+<p>It keeps to each person&#39;s cover limit for the term, and roles marked last resort are only
+used when nobody else is free.</p>
+</li>
+<li><p>Add <strong>work</strong> for each covered lesson.</p>
+</li>
+<li><p>Print slips, or copy the list.</p>
+</li>
+</ul>
+</li>
+<li><strong>This week</strong> on Cover shows each day at a glance. Click a day to open it.</li>
+<li><strong>Today</strong> has the safety checks (DSLs, first aiders and senior staff in), pupils who are off, and
+the daily briefing.</li>
+<li><strong>Staff day</strong> shows each person&#39;s day, including cover. The <strong>staff view</strong> (File menu) shows the
+same for everyone, with nothing to edit.</li>
+<li><strong>Rest days and on call</strong> (under More; was Rota) handles rest days and on-call lists. <strong>Transport</strong> books vehicles and drivers.</li>
+</ul>
+<h3 id="telling-people">Telling people</h3><p>The <strong>bell</strong> counts staff with changes they have not been told about:</p>
+<ul>
+<li>new or cancelled cover and duties</li>
+<li>being called in</li>
+<li>changes to their weekly timetable</li>
+</ul>
+<p>For each person there is a ready-written message. You can:</p>
+<ul>
+<li>send it by <strong>Email</strong> or <strong>Teams chat</strong> from your own account</li>
+<li><strong>Copy</strong> it</li>
+<li>download a <strong>Calendar file</strong></li>
+<li><strong>Put it in the outbox</strong></li>
+</ul>
+<p>Then mark the person as told. In the Power Apps edition, a flow your IT team sets up can send the
+outbox, and the bell shows what was sent.</p>
+<h3 id="a-summary-of-changes-for-all-staff">A summary of changes for all staff</h3><p>At the top of the bell&#39;s window, <strong>Summary of changes for all staff</strong> is one short list of what has changed
+in the usual week, by group, ready to send to everyone:</p>
+<ul>
+<li>new, moved and removed lessons</li>
+<li>new rooms and changes of staff</li>
+<li>PPA, meetings and other blocked time, by type (never the note)</li>
+</ul>
+<p>It has no pupil names, no cover and no reasons for absence.</p>
+<ol>
+<li>The first time, choose <strong>Start from now</strong>. Changes after that are listed.</li>
+<li>Type when the changes start, if you like (for example <em>Monday 23 November</em>). It goes in the heading.</li>
+<li>Choose <strong>Copy summary</strong> and paste it into an email or a Teams post, or <strong>Email it</strong> to open an email, or
+<strong>Print</strong>.</li>
+<li>Choose <strong>Mark as sent</strong>. The next summary lists only what changes after this. Undo works.</li>
+</ol>
+<p><strong>Changes since</strong> can also compare with any snapshot (File, Snapshots).</p>
+<p>The bell&#39;s own messages to each person still work as before.</p>
+<h3 id="lesson-registers-power-apps">Lesson registers (Power Apps)</h3><p>In the Power Apps staff app, staff choose <strong>Take register</strong> on a lesson they teach or cover today.
+They mark each pupil Present, Late, Absent or Out of lesson, then choose <strong>Save register</strong>. Pupils
+the office has reported off are already marked Absent.</p>
+<p>In the Timetable Builder, <strong>Today</strong>, the <strong>Lesson registers</strong> card shows who has taken each register
+and which are missing. It can be downloaded as a spreadsheet.</p>
+<h3 id="the-staff-viewer">The staff Viewer</h3><p><strong>Setup</strong>, then <strong>Staff viewer</strong> (or <strong>File</strong>, then <strong>Publish for staff</strong>) makes a separate,
+read-only page for staff. On a phone it opens on <strong>Today</strong>:</p>
+<ul>
+<li>today&#39;s changes (cover they are doing, rooms that have changed)</li>
+<li><strong>Now and Next</strong> all day long: what is first before school, the lesson now with Room, Group and the
+other adults and the minutes left, the break, and what tomorrow starts with after school</li>
+<li>a search for a colleague, room or group</li>
+<li>the whole day, each lesson labelled</li>
+</ul>
+<p>The other tabs are <strong>Week</strong>, <strong>Find</strong> (staff, rooms, groups, and students if allowed) and <strong>Cover</strong>.
+<strong>Display and settings</strong> has text size and an easier-to-read font.</p>
+<p>Tick what staff may see, then download one of these:</p>
+<ul>
+<li><strong>the Viewer for all staff</strong>: one file, where each person picks their name once</li>
+<li><strong>a Viewer for each person</strong>: a zip, with one file each holding only that person&#39;s days</li>
+<li><strong>the published copy</strong>: <code>timetable-published.json</code>, for a Viewer on the school&#39;s web site</li>
+</ul>
+<p>Publish again when the timetable or cover changes. The Viewer never shows pupils, emails, notes or
+reasons for absence. <a href="staff-viewer.html">STAFF-VIEWER.md</a> explains how to get it onto staff phones.</p>
+<h3 id="the-pupil-viewer">The pupil Viewer</h3><p><strong>Setup</strong>, then <strong>Pupil viewer</strong> makes a very simple page for one pupil: what is on now and next with a
+symbol, the room and their adult, a countdown, and a gentle note when a day is different. Download one
+pupil&#39;s file, or a zip with one file for every pupil. Each file holds only that pupil&#39;s own timetable,
+with no other pupil&#39;s name in it. You can add photos of adults if you wish. <a href="pupil-viewer.html">PUPIL-VIEWER.md</a> has the
+details.</p>
+<h2 id="a-new-school-year">A new school year</h2><p><strong>File</strong>, then <strong>New school year…</strong> (or Ctrl K, &quot;new school year&quot;) makes next year&#39;s timetable from a copy
+of this one, in four steps:</p>
+<ol>
+<li><strong>What to keep.</strong> Staff, rooms, subjects, groups and class lists, the school day and rules are kept.
+Choose the lessons: keep this year&#39;s as a starting point, keep only locked lessons, or start empty.
+Absences and cover are not copied. Term dates are not copied unless you tick it.</li>
+<li><strong>Year groups.</strong> Every pupil moves up a year (Reception to Year 1, Year 7 to Year 8). Choose which year
+leaves; the leavers are named, and are taken off class lists and lessons in the new year.</li>
+<li><strong>Name.</strong> The name moves on a year (2026 to 2027 becomes 2027 to 2028), and you set the first day.</li>
+<li><strong>Check and make.</strong><ul>
+<li><strong>Download the new year as a file</strong> gives you next year&#39;s file and leaves this timetable as it is.</li>
+<li><strong>Switch to it now</strong> asks first. It then takes a snapshot of this year&#39;s lessons and downloads a
+backup of the whole timetable before switching. Undo goes straight back.</li>
+</ul>
+</li>
+</ol>
+<h2 id="where-the-timetable-is-kept-and-saving">Where the timetable is kept, and saving</h2><p>Open <strong>File</strong>, then <strong>Where your data is kept</strong>, or click the chip by Save. The timetable can be
+kept in:</p>
+<ul>
+<li>this file</li>
+<li>an Excel workbook</li>
+<li>a folder of CSV files</li>
+<li>Excel in OneDrive or SharePoint (Microsoft 365)</li>
+<li>Google Sheets</li>
+<li>Dataverse, in the Power Apps edition</li>
+</ul>
+<p><strong>Save</strong> writes to wherever it is kept:</p>
+<ul>
+<li>In Microsoft 365 or Google Sheets, if someone else saved since you opened it, you choose whether
+to open their version or save yours over it. A copy of yours is downloaded first.</li>
+<li>In the Power Apps edition, changes save by themselves.</li>
+</ul>
+<p>Save a <strong>backup file</strong> (File menu) every week or two, and keep it in the school&#39;s own storage.</p>
+<h2 id="who-can-change-it">Who can change it</h2><p><strong>Setup</strong>, then <strong>Who can change this timetable</strong>:</p>
+<ul>
+<li><strong>Can change everything.</strong></li>
+<li><strong>Cover and the day only:</strong> Staff day, Today, Cover, Rest days and on call, and Transport.</li>
+<li><strong>Can look, not change.</strong></li>
+</ul>
+<p>People are known by the account they sign in with: Microsoft 365, Google or Power Apps. You
+cannot remove your own access by mistake.</p>
+<h2 id="the-school-39-s-look">The school&#39;s look</h2><p><strong>Setup</strong>, then <strong>Your school&#39;s look</strong>: a logo for the menu, the staff view and printouts, and a
+colour. The colour is adjusted if needed, so text stays easy to read.</p>
+<h2 id="personal-data">Personal data</h2><p><strong>Setup</strong>, then <strong>Personal data</strong>:</p>
+<ul>
+<li><strong>Everything about one person</strong> downloads all the timetable holds about a member of staff or a
+pupil, for a subject access request.</li>
+<li><strong>Remove old records</strong> deletes day-to-day records from before a date, after a backup. Agree how
+long to keep them with your data protection officer.</li>
+</ul>
+<h2 id="the-ai-assistant-optional">The AI assistant (optional)</h2><p>The AI assistant is off unless someone who can change everything turns it on, in <strong>Setup</strong>, then
+<strong>AI assistant</strong>. Your IT team chooses the AI service and sets it up (see <a href="ai-providers.html">AI-PROVIDERS.md</a>). Only
+people who can change everything see the AI buttons.</p>
+<p><strong>What it can do.</strong> Look for the buttons marked with a spark:</p>
+<table>
+<thead>
+<tr>
+<th>Button</th>
+<th>Where</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Fix all clashes</td>
+<td>Timetable, the toolbar</td>
+<td>Moves as few lessons as possible to clear the rule problems</td>
+</tr>
+<tr>
+<td>Timetable this class</td>
+<td>Auto build, each group</td>
+<td>Places the lessons a group is missing from its weekly plan</td>
+</tr>
+<tr>
+<td>Find cover</td>
+<td>Cover, each person off that day</td>
+<td>Chooses who covers each lesson, fairly</td>
+</tr>
+<tr>
+<td>Balance this week</td>
+<td>One person, a member of staff</td>
+<td>Spreads one person&#39;s lessons more evenly</td>
+</tr>
+<tr>
+<td>Explain this placement</td>
+<td>The lesson editor</td>
+<td>Says why a lesson is where it is, and whether a better slot exists</td>
+</tr>
+<tr>
+<td>Run a what-if</td>
+<td>What if, with a scenario open</td>
+<td>Tries an idea you type, in the scenario only</td>
+</tr>
+<tr>
+<td>Map my spreadsheet</td>
+<td>Upload sheets</td>
+<td>Matches a lessons sheet&#39;s columns when the app does not recognise them</td>
+</tr>
+</tbody></table>
+<p><strong>How it works.</strong></p>
+<ol>
+<li>The AI only ever sees codes, never names. You can choose to see exactly what is sent first.</li>
+<li>The AI proposes. The app checks the proposal against its own rules. If anything fails, it tells
+the AI why and asks again, up to five times. If it still fails, nothing changes.</li>
+<li>You see before and after, with each change listed. Choose <strong>Approve</strong>, <strong>Edit</strong> (untick the
+changes you do not want; the rest is checked again) or <strong>Reject</strong>.</li>
+<li>Approving is one change, so <strong>Undo</strong> puts it back.</li>
+</ol>
+<p>The AI never changes the timetable by itself. Locked lessons never move, an action for one group or
+person cannot touch anyone else&#39;s lessons, and a what-if only changes the open scenario.</p>
+<p><strong>In a what-if</strong>, choose people, groups, rooms and subjects from the <strong>Insert a person, group, room or subject</strong> list rather than typing their
+names. A typed name is not sent; the app asks you to use the list.</p>
+<h3 id="making-your-own-ai-buttons">Making your own AI buttons</h3><p><strong>Setup</strong>, then <strong>AI assistant</strong> lists where every AI button is, with <strong>Go there</strong> for each.
+<strong>Setup</strong>, then <strong>AI actions</strong> lists every AI button.</p>
+<ul>
+<li>The seven official ones are locked. Untick <strong>On</strong> to hide one, <strong>View</strong> to see exactly how it works,
+or <strong>Duplicate</strong> to make your own version.</li>
+<li><strong>New action</strong> opens a form: a name and button label, an icon, what it does (move lessons, choose
+cover, explain, or match spreadsheet columns), where the button goes, what data it may send, and
+the prompt. Insert placeholders such as <code>{{group_code}}</code> from the list. Problems are listed as you
+type, and it cannot be saved until they are put right.</li>
+<li><strong>Preview what it sends</strong> shows the request, built from a made-up school; nothing is sent.</li>
+<li><strong>Try it on practice data</strong> runs it on the made-up school, checked and reviewed like a real run,
+without touching your timetable.</li>
+<li><strong>Save</strong> and the button appears on its page straight away, marked <em>Custom</em>. Each save is a new
+version; <strong>Earlier versions</strong> in the form loads an old one back.</li>
+<li><strong>Share</strong> saves one action as a pack file; <strong>Save your actions as a pack</strong> saves them all. <strong>Bring
+in an action pack</strong> adds actions from a pack file. They come in switched off, so you can look at
+them and try them first.</li>
+</ul>
+<p>A prompt cannot contain anyone&#39;s name, staff code or email. If a word is also part of someone&#39;s name
+(like &quot;will&quot;), the form asks you to confirm it is an ordinary word there.</p>
+<p><a href="ai-action-templates.html">AI-ACTION-TEMPLATES.md</a> describes the format, with examples.</p>
+<h2 id="keyboard-shortcuts">Keyboard shortcuts</h2><p>Press <strong>?</strong> for the full list. The main ones:</p>
+<table>
+<thead>
+<tr>
+<th>Keys</th>
+<th>What they do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ctrl K</td>
+<td>Search or jump to anything</td>
+</tr>
+<tr>
+<td>Ctrl S</td>
+<td>Save</td>
+</tr>
+<tr>
+<td>Ctrl Z / Ctrl Y</td>
+<td>Undo / Redo</td>
+</tr>
+<tr>
+<td>Arrow keys</td>
+<td>Move around the timetable</td>
+</tr>
+<tr>
+<td>Shift + arrows</td>
+<td>Select a block of slots</td>
+</tr>
+<tr>
+<td>Alt + arrows</td>
+<td>Move the chosen lesson</td>
+</tr>
+<tr>
+<td>Escape</td>
+<td>Close a window, or clear the selection</td>
+</tr>
+</tbody></table>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

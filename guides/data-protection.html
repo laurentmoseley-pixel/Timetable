@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data protection: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html" aria-current="page">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="timetable-builder-data-protection-information">Timetable Builder: data protection information</h1><p>This is for the school&#39;s data protection officer (DPO) and whoever completes the school&#39;s data
+protection impact assessment (DPIA). The school is the data controller. The Timetable Builder is
+software the school runs. Its supplier does not receive, see or host any of the school&#39;s data.</p>
+<h2 id="what-the-app-holds">What the app holds</h2><table>
+<thead>
+<tr>
+<th>About</th>
+<th>What</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Staff</td>
+<td>Name, code, roles, subjects and specialisms, working days and rest days, maximum periods, cover limits, driving licence category, work email address, optional MIS code</td>
+<td>To timetable lessons, arrange cover fairly, and tell people about changes</td>
+</tr>
+<tr>
+<td>Staff absence</td>
+<td>Dates, which periods, type (for example Illness, Training, Trip), optional reason</td>
+<td>To arrange cover. Illness is health information, a special category of personal data: keep reasons brief or leave them blank.</td>
+</tr>
+<tr>
+<td>Cover and duties</td>
+<td>Who covered what, when; work set; swaps; calls in from rest days; on-call turns</td>
+<td>To run the day and share cover fairly</td>
+</tr>
+<tr>
+<td>Pupils</td>
+<td>Name, code, year group, groups and sets, key adult, optional MIS code, who must be kept apart</td>
+<td>To timetable lessons and keep them safe</td>
+</tr>
+<tr>
+<td>Pupil absence (optional)</td>
+<td>Dates and an optional reason</td>
+<td>So staffing ratios use the pupils actually in. The MIS remains the register of attendance.</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Vehicles, journeys, drivers and passengers</td>
+<td>To book school transport</td>
+</tr>
+<tr>
+<td>Messages</td>
+<td>Messages to staff about their cover and timetable, and who has been told what</td>
+<td>To tell people about changes</td>
+</tr>
+<tr>
+<td>Change log</td>
+<td>What changed, when, and the name entered on the device (or the signed-in user)</td>
+<td>Accountability</td>
+</tr>
+</tbody></table>
+<p>The app does not need dates of birth, addresses, contact details for pupils or parents, medical
+details, or SEN information. It holds none of these unless someone types them into a free-text
+field.</p>
+<h2 id="where-it-is-kept">Where it is kept</h2><p>The school chooses this in <strong>File</strong>, then <strong>Where your data is kept</strong>, and the app shows the choice
+in the header at all times.</p>
+<table>
+<thead>
+<tr>
+<th>Choice</th>
+<th>Location</th>
+<th>Who else processes it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Inside the file, an Excel workbook, or a CSV folder</td>
+<td>Wherever the school saves the file</td>
+<td>Nobody</td>
+</tr>
+<tr>
+<td>Microsoft 365</td>
+<td>The school&#39;s OneDrive or SharePoint</td>
+<td>Microsoft, under the school&#39;s existing Microsoft agreement</td>
+</tr>
+<tr>
+<td>Google Sheets</td>
+<td>The school&#39;s Google Drive</td>
+<td>Google, under the school&#39;s existing Google Workspace agreement</td>
+</tr>
+<tr>
+<td>Power Apps</td>
+<td>The school&#39;s Dataverse environment</td>
+<td>Microsoft, under the school&#39;s existing Microsoft agreement</td>
+</tr>
+</tbody></table>
+<h2 id="the-staff-viewer">The staff Viewer</h2><p>The Viewer (<a href="staff-viewer.html">STAFF-VIEWER.md</a>) is a read-only page for staff, holding a <strong>staff-safe copy</strong> that the
+school publishes. The copy holds:</p>
+<ul>
+<li>staff names</li>
+<li>each lesson&#39;s group, subject, room and staff</li>
+<li>each published day&#39;s cover and duties</li>
+<li>if the school chooses, who is away (names only)</li>
+</ul>
+<p>It never holds pupils, emails, pupil numbers, absence reasons or types, notes or notices. A pupil&#39;s
+name in any text is replaced with &quot;a pupil&quot;. Who can open a copy depends on where the school puts it,
+so keep it where only staff can reach it. The Viewer sends nothing anywhere. On each device it keeps
+only who the person is and what they last saw.</p>
+<h2 id="the-pupil-viewer">The pupil Viewer</h2><p>Each pupil Viewer file holds one pupil&#39;s first name and their own lessons (subject, room, the adults&#39;
+names and initials, and who is covering). It holds no other pupil&#39;s data, no staff codes, emails or
+notes, and no reasons for absence. It sends nothing anywhere and allows no connections. On the device it
+remembers only the text size and font chosen.</p>
+<p><strong>Adult photos are optional and are new personal data.</strong> If you add them, they are kept with the
+timetable as small pictures (120 pixels) and go only into the Viewers of pupils that adult works with.
+Ask each adult first, record the purpose (helping pupils recognise their adult), and remove a photo
+when the adult leaves or asks. Give each file only to its own pupil.</p>
+<h2 id="the-staff-app-and-lesson-registers-power-apps">The staff app and lesson registers (Power Apps)</h2><p>In the Power Apps edition (<a href="power-apps-staff-app.html">POWER-APPS-STAFF-APP.md</a>) there are two more tables:</p>
+<ul>
+<li><p><strong>Timetable published</strong> holds the staff-safe copy. For registers it also holds:</p>
+<ul>
+<li>each group&#39;s pupil list (names)</li>
+<li>which pupils are reported off (no reasons)</li>
+<li>a one-way code of each staff email, so the app knows who is signed in without holding emails</li>
+</ul>
+<p>Staff can read it. It is replaced at each update.</p>
+</li>
+<li><p><strong>Timetable register</strong> holds lesson registers:</p>
+<ul>
+<li>date, group and period</li>
+<li>the staff code of who took it</li>
+<li>each pupil&#39;s code and mark (Present, Late, Absent, Out of lesson)</li>
+</ul>
+<p>It holds no names, reasons or notes. Staff can add registers and correct their own. Leaders can
+read them all.</p>
+</li>
+</ul>
+<p>Staff have no access to the Timetable item table. Agree a retention period for registers with your
+DPO and set a bulk delete job (<a href="power-apps-staff-app.html">POWER-APPS-STAFF-APP.md</a>). Lesson registers are for internal
+monitoring; the MIS remains the statutory attendance register.</p>
+<h2 id="security-measures">Security measures</h2><ul>
+<li><strong>Nowhere else.</strong><ul>
+<li>The app sends data only to the place the school chose.</li>
+<li>There is no tracking, analytics, advertising or telemetry.</li>
+<li>The single-file and hosted editions carry a content security policy. The browser itself
+blocks connections to anywhere except Microsoft sign-in and Microsoft 365, Google Sheets, and
+the app&#39;s own web address.</li>
+</ul>
+</li>
+<li><strong>Sign-in.</strong><ul>
+<li>Cloud editions use each person&#39;s own school account, through Microsoft&#39;s MSAL library and
+Google&#39;s own sign-in page.</li>
+<li>Microsoft access is <em>delegated</em>: a person reaches only files they could already open.</li>
+<li>No passwords, keys, client secrets or flow addresses are stored in the app or the timetable.</li>
+<li>Sign-in tokens stay in the browser tab.</li>
+</ul>
+</li>
+<li><strong>Access.</strong><ul>
+<li>Storage permissions or the Dataverse security role decide who can open the data.</li>
+<li>Inside the app, roles decide who can change everything, only cover and the day, or only look.</li>
+<li>The staff view has nothing to edit.</li>
+</ul>
+</li>
+<li><strong>Imports are made safe.</strong><ul>
+<li>Everything brought in is cleaned of control characters and of keys that could change how the
+app behaves. This includes rows written straight into Dataverse by another tool.</li>
+<li>Text is always shown as text, never run.</li>
+<li>Spreadsheet exports cannot carry formulas.</li>
+<li>Google Sheets are written as plain values.</li>
+</ul>
+</li>
+<li><strong>Accountability.</strong> Changes are recorded in the change log. Dataverse auditing can be turned on
+for a full history.</li>
+<li><strong>Backups.</strong> The app reminds people to save a backup every two weeks. Backups hold personal data:
+store them as you store other staff records.</li>
+</ul>
+<h2 id="rights-of-the-people-concerned">Rights of the people concerned</h2><ul>
+<li><p><strong>Subject access.</strong> Setup, then <strong>Personal data</strong>, then <strong>Everything about one person</strong>,
+downloads all the timetable holds about a member of staff or a pupil, as JSON or a spreadsheet.
+This covers:</p>
+<ul>
+<li>their record, lessons and groups</li>
+<li>absences, cover done and received, swaps and rest-day changes</li>
+<li>journeys and messages</li>
+<li>what they have been told</li>
+<li>every change log entry that names them</li>
+<li>scenarios that include them</li>
+</ul>
+<p>The download is recorded in the change log.</p>
+</li>
+<li><p><strong>Correction.</strong> Edit the person in Setup. Changes follow everywhere the person appears.</p>
+</li>
+<li><p><strong>Erasure.</strong> Removing a person in Setup removes them from lessons, cover, rotas, messages and
+lists. Their past cover entries go too.</p>
+</li>
+</ul>
+<h2 id="keeping-records-only-as-long-as-needed">Keeping records only as long as needed</h2><p>Setup, then <strong>Personal data</strong>, then <strong>Remove old records</strong>, deletes day-to-day records from before
+a date you choose:</p>
+<ul>
+<li>staff and pupil absences</li>
+<li>cover choices and work</li>
+<li>extra-staffing requests, swaps and rest-day changes</li>
+<li>one-off journeys</li>
+<li>outbox messages</li>
+<li>records of who was told</li>
+<li>change log entries</li>
+</ul>
+<p>A backup is downloaded first, and the removal is recorded in the change log. Staff, pupils, groups
+and lessons are not touched.</p>
+<p>A common choice is to keep the current and previous school year. Agree the period with your DPO
+and set it in your retention schedule.</p>
+<h2 id="for-the-dpia">For the DPIA</h2><ul>
+<li><strong>Personal data of children?</strong> Yes: pupils&#39; names, groups, timetables, and who must be kept
+apart.</li>
+<li><strong>Special category data?</strong> Only if staff absence types or free-text reasons describe health.
+Use the type field and keep reasons brief.</li>
+<li><strong>Automated decisions?</strong> Cover suggestions and the automatic timetable are proposals. People
+review and can change every choice before it is used. Nothing has a legal or similarly
+significant effect on anyone.</li>
+<li><strong>International transfers?</strong> Only through the school&#39;s own Microsoft or Google tenancy, under the
+school&#39;s existing terms.</li>
+<li><strong>Supplier access?</strong> None. The supplier does not host the app or the data.</li>
+</ul>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

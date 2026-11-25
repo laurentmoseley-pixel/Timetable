@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cloud sign-in: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html" aria-current="page">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="timetable-builder-keeping-the-timetable-in-microsoft-365-or-google-sheets">Timetable Builder: keeping the timetable in Microsoft 365 or Google Sheets</h1><p>This is for the person who looks after IT. Every step is done in a web browser; nothing needs a
+command line. Allow about 30 minutes.</p>
+<p>When it is set up, staff open the Timetable Builder at a web address, sign in with their own school
+account, and keep the timetable as a workbook in OneDrive or a SharePoint library, or as a Google
+Sheet. Everyone the workbook is shared with opens the same timetable.</p>
+<h2 id="how-it-keeps-data-safe">How it keeps data safe</h2><ul>
+<li><p><strong>The app holds no timetable.</strong> The copy on your web site is only the app. The timetable stays in
+your school&#39;s Microsoft 365 or Google Workspace, in a file you control and share like any other.</p>
+</li>
+<li><p><strong>Each person signs in as themselves.</strong> Microsoft sign-in uses Microsoft&#39;s own library (MSAL) with
+the <em>delegated</em> permission <code>Files.ReadWrite.All</code>. That means a person can only open files they could
+already open in OneDrive or SharePoint. Google sign-in uses Google&#39;s own sign-in page with the
+<code>spreadsheets</code> scope, plus <code>email</code> to show who is signed in.</p>
+</li>
+<li><p><strong>No secrets anywhere.</strong> The app needs only the app (client) IDs. These are public by design. The
+app refuses anything that looks like a client secret. Do not create a client secret or certificate.</p>
+</li>
+<li><p><strong>Tokens stay in the browser tab.</strong> Sign-in tokens are kept in the tab&#39;s session storage
+(Microsoft) or in memory (Google). They are never written into the timetable or the file.</p>
+</li>
+<li><p><strong>Nowhere else.</strong> The app&#39;s content security policy lets it connect to only these places:</p>
+<ul>
+<li><code>login.microsoftonline.com</code> and <code>graph.microsoft.com</code></li>
+<li>your <code>*.sharepoint.com</code> file downloads</li>
+<li><code>sheets.googleapis.com</code> and <code>www.googleapis.com</code></li>
+<li>its own web address</li>
+</ul>
+<p>There is no tracking or analytics.</p>
+</li>
+<li><p><strong>Saves never collide silently.</strong> If someone else saved the workbook since it was opened, the app
+says so. It downloads a copy of the person&#39;s own version first, then lets them choose which
+version to keep.</p>
+</li>
+</ul>
+<h2 id="1-put-the-app-on-a-web-address">1. Put the app on a web address</h2><p>Microsoft and Google only send a sign-in back to a web address registered for the app. So the app
+has to be at an <code>https://</code> address. Use one of these:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Good for</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Your school&#39;s own web server or intranet</td>
+<td>Any school</td>
+<td>Ask whoever runs it to publish one file, <code>index.html</code>, in its own folder.</td>
+</tr>
+<tr>
+<td>Azure Storage static website</td>
+<td>Microsoft 365 schools with Azure</td>
+<td>See below.</td>
+</tr>
+<tr>
+<td>GitHub Pages</td>
+<td>Any school</td>
+<td>See below. The file holds no school data, only the app IDs, so a public site is acceptable.</td>
+</tr>
+<tr>
+<td>Netlify Drop</td>
+<td>Any school</td>
+<td>Drag a folder containing <code>index.html</code> onto app.netlify.com/drop, then claim the site with a free account.</td>
+</tr>
+</tbody></table>
+<p>SharePoint document libraries download HTML files instead of running them, so SharePoint cannot
+host the app itself. It can still hold the timetable workbook.</p>
+<p><strong>Azure Storage static website</strong></p>
+<ol>
+<li>In the Azure portal, create a Storage account (Standard, locally redundant is enough).</li>
+<li>Open it, then go to <strong>Data management</strong>, then <strong>Static website</strong>. Choose <strong>Enabled</strong>, set the
+index document name to <code>index.html</code>, and save.</li>
+<li>Copy the <strong>Primary endpoint</strong>, for example <code>https://ttschool.z33.web.core.windows.net/</code>.</li>
+<li>Go to <strong>Storage browser</strong>, then <strong>Blob containers</strong>, then <strong>$web</strong>, then <strong>Upload</strong>. Upload the app
+file renamed to <code>index.html</code>.</li>
+</ol>
+<p><strong>GitHub Pages</strong></p>
+<ol>
+<li>Create a repository, for example <code>timetable</code>.</li>
+<li>Choose <strong>Add file</strong>, then <strong>Upload files</strong>, and upload the app file renamed to <code>index.html</code>.</li>
+<li>Go to <strong>Settings</strong>, then <strong>Pages</strong>. Choose <strong>Deploy from a branch</strong>, then <code>main</code> and <code>/ (root)</code>.
+The address is <code>https://&lt;account&gt;.github.io/timetable/</code>.</li>
+</ol>
+<p>Use the exact address, including the final <code>/</code>, in the next steps.</p>
+<h2 id="2-register-the-app-with-microsoft-for-onedrive-and-sharepoint">2. Register the app with Microsoft (for OneDrive and SharePoint)</h2><ol>
+<li>Go to the Microsoft Entra admin centre, then <strong>Identity</strong>, <strong>Applications</strong>, <strong>App registrations</strong>,
+and choose <strong>New registration</strong>.</li>
+<li>Fill in the registration:<ul>
+<li>Name: <code>Timetable Builder</code></li>
+<li>Supported account types: <strong>Accounts in this organizational directory only</strong></li>
+<li>Redirect URI: platform <strong>Single-page application (SPA)</strong>, with the app&#39;s exact address from
+step 1</li>
+</ul>
+</li>
+<li>Choose <strong>Register</strong>.</li>
+<li>Go to <strong>API permissions</strong>, then <strong>Add a permission</strong>, <strong>Microsoft Graph</strong>, <strong>Delegated
+permissions</strong>. Choose <strong>Files.ReadWrite.All</strong>, then <strong>Add permissions</strong>.</li>
+<li>Optional, but it saves every member of staff a consent screen: choose <strong>Grant admin consent</strong>.</li>
+<li>Do <strong>not</strong> add a client secret or certificate.</li>
+<li>From <strong>Overview</strong>, copy the <strong>Application (client) ID</strong> and the <strong>Directory (tenant) ID</strong>.</li>
+</ol>
+<h2 id="3-register-the-app-with-google-for-google-sheets">3. Register the app with Google (for Google Sheets)</h2><ol>
+<li>In the Google Cloud console, create a project, for example <code>Timetable Builder</code>.</li>
+<li>Go to <strong>APIs and services</strong>, then <strong>Library</strong>. Find <strong>Google Sheets API</strong> and choose <strong>Enable</strong>.</li>
+<li>Set up the OAuth consent screen (Google Auth Platform):<ul>
+<li>Audience: <strong>Internal</strong>, so only your Google Workspace accounts can sign in and no Google review
+is needed</li>
+<li>Add the scopes <code>.../auth/spreadsheets</code> and <code>email</code></li>
+</ul>
+</li>
+<li>Go to <strong>Clients</strong> (or <strong>Credentials</strong>), then <strong>Create client</strong>, type <strong>Web application</strong>:<ul>
+<li>Authorised JavaScript origins: the site&#39;s origin, for example <code>https://ttschool.z33.web.core.windows.net</code></li>
+<li>Authorised redirect URIs: the app&#39;s exact address from step 1</li>
+</ul>
+</li>
+<li>Copy the <strong>Client ID</strong>, which ends <code>.apps.googleusercontent.com</code>. Ignore the client secret that
+Google shows: the app never uses it.</li>
+</ol>
+<h2 id="4-put-the-ids-into-the-app">4. Put the IDs into the app</h2><ol>
+<li>Open the app at its web address. The app&#39;s file menu is at the top right.</li>
+<li>Choose <strong>File</strong>, then <strong>Where your data is kept</strong>, then <strong>Cloud sign-in (for your IT team)</strong>.</li>
+<li>Enter the Microsoft client ID and tenant ID (or your school&#39;s domain), and/or the Google client
+ID.</li>
+<li>Choose <strong>Try these on this computer</strong> and test signing in.</li>
+<li>Choose <strong>Download the app for your web site</strong>. This makes <code>timetable-builder.html</code> with the IDs
+built in and no timetable inside.</li>
+<li>Rename it to <code>index.html</code> and upload it over the old one.</li>
+</ol>
+<p>Instead of step 5, you can choose <strong>Download timetable-config.json</strong> and upload it next to
+<code>index.html</code>. The app reads it from the same address.</p>
+<h2 id="5-first-use">5. First use</h2><ol>
+<li>Open the app at its web address.</li>
+<li>Choose <strong>Where your data is kept</strong>, then <strong>Sign in with Microsoft</strong> (or <strong>Sign in with Google</strong>).</li>
+<li>Choose <strong>Save to a new workbook in OneDrive</strong> (or <strong>Save to a new Google Sheet</strong>). Or open an
+existing timetable workbook from its link.</li>
+<li>Share the workbook with the colleagues who build the timetable (Can edit / Editor). To keep it in
+a SharePoint library, move it there and open it again from its link.</li>
+<li>From then on, <strong>Save</strong> writes to that workbook. Each browser remembers which workbook it was using
+and offers to open it next time.</li>
+</ol>
+<p>The workbook can still be opened in Excel or Google Sheets, and its sheets are the same as the Excel
+template. Avoid editing it there while others are using the app. If you do edit it there, use
+<strong>Open it again</strong> in the app afterwards.</p>
+<h2 id="troubleshooting">Troubleshooting</h2><table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&quot;Microsoft does not know this web address&quot; (AADSTS50011)</td>
+<td>Add the exact address, with the final <code>/</code>, as a <strong>Single-page application</strong> redirect URI.</td>
+</tr>
+<tr>
+<td>&quot;An administrator needs to approve the app&#39;s permission&quot;</td>
+<td>Grant admin consent for Files.ReadWrite.All (step 2.5), or allow users to consent.</td>
+</tr>
+<tr>
+<td>&quot;Microsoft cannot find the app in your school&#39;s directory&quot;</td>
+<td>Check the client ID and tenant ID.</td>
+</tr>
+<tr>
+<td>The sign-in window does not open</td>
+<td>Allow pop-ups for the app&#39;s address.</td>
+</tr>
+<tr>
+<td>Google says redirect_uri_mismatch</td>
+<td>Add the exact address as an authorised redirect URI, and its origin as a JavaScript origin.</td>
+</tr>
+<tr>
+<td>Google asks to sign in again every hour</td>
+<td>This is expected: Google&#39;s sign-in lasts an hour. Saving asks first, and nothing is lost.</td>
+</tr>
+<tr>
+<td>&quot;The workbook is locked&quot;</td>
+<td>Someone has it open with changes in the Excel desktop app. Close it there.</td>
+</tr>
+<tr>
+<td>Cloud choices say they need a web address</td>
+<td>The app was opened as a file on a computer. Open it from its web address.</td>
+</tr>
+</tbody></table>
+<h2 id="taking-it-away">Taking it away</h2><ul>
+<li>Delete the app registration in Microsoft Entra and/or the OAuth client in Google Cloud.</li>
+<li>Remove <code>index.html</code> from the web site.</li>
+</ul>
+<p>The timetable workbooks stay where they are, as ordinary files.</p>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>

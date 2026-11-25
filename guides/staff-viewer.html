@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Staff Viewer: Timetable Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; font-src 'self'; script-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><link rel="icon" href="../assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="../assets/site.css"></head>
+<body><a class="skip" href="#main">Skip to the content</a>
+<header class="top"><div class="wrap"><a class="brand" href="../"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Timetable Builder</a>
+<nav aria-label="Site"><a href="../">Home</a><a href="../builder.html">Open the Builder</a></nav></div></header>
+<main id="main" class="doc"><div class="wrap"><aside aria-label="Guides"><a href="user-guide.html">User guide</a><a href="whats-new.html">What's new</a><a href="setup.html">Setting up</a><a href="staff-viewer.html" aria-current="page">Staff Viewer</a><a href="pupil-viewer.html">Pupil Viewer</a><a href="data-protection.html">Data protection</a><a href="admin-guide.html">For IT and admins</a><a href="cloud-setup.html">Cloud sign-in</a><a href="power-apps-staff-app.html">Power Apps staff app</a><a href="power-automate-outbox.html">Power Automate outbox</a><a href="ai-privacy.html">AI and privacy</a><a href="ai-providers.html">AI providers</a><a href="ai-action-templates.html">AI action templates</a><a href="accessibility.html">Accessibility</a><a href="release-notes.html">Release notes</a></aside><article class="prose"><h1 id="the-staff-viewer">The staff Viewer</h1><p>The Viewer is a separate, read-only page for staff. It has four tabs, each a big button along the bottom
+of a phone:</p>
+<ul>
+<li><strong>Today</strong>, which opens first:<ul>
+<li><strong>Updated</strong> time at the top, with a gentle note if the copy is more than a week old</li>
+<li><strong>Today&#39;s changes</strong>: cover you are doing, rooms that have changed, lessons not with you today</li>
+<li><strong>Now and Next</strong>, all day:<ul>
+<li>before school: what you have first and when it starts</li>
+<li>during a lesson: the subject in large type, then <strong>Room</strong>, <strong>Group</strong> and <strong>With</strong> (the other adults)
+on their own lines, and a bar showing the minutes left</li>
+<li>at break: the break, and what is next</li>
+<li>after school: what tomorrow starts with</li>
+</ul>
+</li>
+<li><strong>Find a colleague, room or group</strong>: type a name and tap it</li>
+<li>the whole day, each lesson labelled the same way</li>
+</ul>
+</li>
+<li><strong>Week</strong>: this week with its cover, or the usual week</li>
+<li><strong>Find</strong>: Staff, Rooms, Groups and (if the school allows it) Students, with a switch at the top. It
+remembers which you used last.</li>
+<li><strong>Cover</strong>: the cover board for each day</li>
+</ul>
+<p>It also lists <strong>what changed since you last looked</strong>.</p>
+<p>Nothing can be changed in it. It has no AI and sends nothing anywhere. It holds a <strong>staff-safe copy</strong>
+of the timetable that the school publishes from the Timetable Builder.</p>
+<h2 id="publishing">Publishing</h2><p>In the Builder, open <strong>Setup, Staff viewer</strong> (or <strong>File, Publish for staff</strong>).</p>
+<p><strong>What staff can see.</strong> Tick what the copy may hold:</p>
+<table>
+<thead>
+<tr>
+<th>Choice</th>
+<th>Default</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Anyone&#39;s timetable</td>
+<td>On</td>
+<td>The Staff tab, to look up a colleague&#39;s day and week. Off: each person sees only their own.</td>
+</tr>
+<tr>
+<td>Rooms</td>
+<td>On</td>
+<td>Every room&#39;s week</td>
+</tr>
+<tr>
+<td>Groups</td>
+<td>On</td>
+<td>Every group&#39;s week, with its staff</td>
+</tr>
+<tr>
+<td>The cover board for each day</td>
+<td>On</td>
+<td>Who covers which lesson, each published day</td>
+</tr>
+<tr>
+<td>Who is away</td>
+<td>Off</td>
+<td>The names of staff who are away each day. Never why.</td>
+</tr>
+<tr>
+<td>School days ahead</td>
+<td>10</td>
+<td>How many school days, from today, the copy covers (1 to 30)</td>
+</tr>
+</tbody></table>
+<p>Then choose one of three downloads:</p>
+<ol>
+<li><strong>Download the Viewer for all staff.</strong> One file for everyone. The first time each person opens it,
+they choose their name. It is remembered on their device only.</li>
+<li><strong>Download a Viewer for each person (.zip).</strong> One file per person, named after them, holding only
+their own days (and rooms, groups and the cover board, if ticked). It opens straight to their
+day. Use this when staff should not see each other&#39;s timetables.</li>
+<li><strong>Download the published copy (.json).</strong> The copy on its own, <code>timetable-published.json</code>, for a
+Viewer on a web site (below).</li>
+</ol>
+<p><strong>Publish again</strong> whenever the timetable or cover changes. A copy covers the days it was published
+for. After that it says it has run out, and shows each person&#39;s usual week.</p>
+<h2 id="what-is-in-a-copy-and-what-never-is">What is in a copy, and what never is</h2><p><strong>In it:</strong></p>
+<ul>
+<li>the school&#39;s name, logo and colour</li>
+<li>days, periods and times</li>
+<li>each lesson&#39;s group, subject (or lesson title), room and staff</li>
+<li>each published day as Staff day shows it: lessons, cover, extra duties, driving, swaps, and
+&quot;Away&quot;, &quot;Rest day&quot; or &quot;Not working&quot; (no reasons)</li>
+<li>what the school ticked above</li>
+</ul>
+<p><strong>Never in it:</strong></p>
+<ul>
+<li>pupils: names, codes, school numbers, lists or groups&#39; pupils</li>
+<li>email addresses</li>
+<li>reasons or types of absence</li>
+<li>notes, notices or cover work</li>
+<li>the change log</li>
+<li>the AI settings or log</li>
+</ul>
+<p>A pupil&#39;s name that reaches any text, such as a lesson title or a 1:1 duty, is replaced with
+&quot;a pupil&quot;.</p>
+<h2 id="live-cover-on-staff-computers-no-power-apps-needed">Live cover on staff computers (no Power Apps needed)</h2><p>This keeps every Viewer on school computers up to date within about a minute of a change, for
+example new cover. It uses OneDrive and SharePoint only: no app registration, links, keys, flows or
+extra licences.</p>
+<pre><code>Builder (timetabler&#39;s PC)  ──saves within seconds──►  synced folder  ──OneDrive──►  SharePoint library
+                                                                                    │
+Viewer (staff PC)  ◄──reads every 20 seconds──  synced folder  ◄──OneDrive──────────┘
+</code></pre>
+<p><strong>Set up once (about 10 minutes):</strong></p>
+<ol>
+<li>In SharePoint, make a library (or folder) that only staff can open, for example <strong>Staff Timetable</strong>.
+Use the site&#39;s permissions so staff can <strong>read</strong>, and only the timetablers can <strong>edit</strong>.</li>
+<li>On the timetabler&#39;s computer, open the library in a browser and choose <strong>Sync</strong>. It now appears in
+File Explorer under your school&#39;s name.</li>
+<li>In the Builder (in Edge or Chrome): <strong>Setup, Staff viewer</strong>, then <strong>Choose the shared folder…</strong>, and
+pick that synced folder. The staff copy (<code>timetable-published.json</code>) is saved there straight away.
+Then choose <strong>Put the Viewer in this folder</strong>.</li>
+<li>Leave <strong>Save by itself after every change</strong> ticked. From now on every change, including cover, is
+saved there within seconds. OneDrive uploads it to SharePoint.</li>
+</ol>
+<p><strong>For staff, once on each computer:</strong></p>
+<ol>
+<li>Open the Staff Timetable library in a browser and choose <strong>Sync</strong> (or your IT team can push
+the sync to school computers).</li>
+<li>In File Explorer, open the synced folder and double-click <strong>Timetable-Viewer.html</strong> (it opens in Edge
+or Chrome). Choose <strong>Choose the folder…</strong> and pick the same synced folder, then pick your name.</li>
+<li>From then on the Viewer shows <strong>Live</strong> at the top. It checks the folder every 20 seconds and shows
+any change, with <strong>changes since you last looked</strong>. When opened again, the browser may ask once to
+<strong>Reconnect</strong>. Choosing &quot;Allow on every visit&quot; stops it asking.</li>
+</ol>
+<p><strong>Things to know:</strong></p>
+<ul>
+<li>It works in Edge and Chrome on Windows and Mac. It does not work in Safari or on phones, because a
+web page on a phone cannot read a synced folder.</li>
+<li>The copy is saved as changes are made, even before the timetabler saves the Builder file itself. If
+a change is undone, the undo goes out too.</li>
+<li>The browser asks the timetabler to reconnect the folder when the Builder is next opened. The
+Builder shows a <strong>Reconnect</strong> button.</li>
+<li>Who can open it depends on the SharePoint library&#39;s permissions. Keep it staff-only.</li>
+<li>This sets things up for Power Apps later: the file in SharePoint is the same staff copy the
+Power Apps staff app uses (<a href="power-apps-staff-app.html">POWER-APPS-STAFF-APP.md</a>).</li>
+</ul>
+<h2 id="getting-it-to-staff">Getting it to staff</h2><p>The Viewer can only show what is in the copy. <strong>Who can open it depends on where you put it</strong>,
+because a file cannot check who is opening it.</p>
+<ul>
+<li><strong>On a computer:</strong> double-click the file. It opens in any browser.</li>
+<li><strong>On a phone:</strong> phones do not run web pages saved as files, so the Viewer needs a web address.<ul>
+<li><strong>The school&#39;s web site or intranet</strong>, in an area only staff can reach. Upload
+the Viewer and <code>timetable-published.json</code> into the same folder. The Viewer then loads the
+newest copy by itself (every 10 minutes while open), so after that you only replace
+<code>timetable-published.json</code> when you publish again.</li>
+<li><strong>Azure Static Web Apps</strong> in the school&#39;s Microsoft 365 tenant, with Microsoft Entra sign-in so
+only staff can open it. Your IT team sets this up once, in the Azure portal in a browser.</li>
+<li>Staff can then <strong>add it to their home screen</strong>, like an app.</li>
+</ul>
+</li>
+<li><strong>SharePoint and Teams</strong> keep files safe to share. However, SharePoint Online does not show web
+pages saved there: it downloads them instead. They work on a computer, not well on a phone.</li>
+<li><strong>Personal Viewers</strong> can go into each person&#39;s OneDrive, or be sent to them, for use on a computer.</li>
+<li><strong>The Power Apps edition:</strong> the Viewer can be its own staff app behind Microsoft 365 sign-in. It
+knows who is signed in, stays up to date by itself, works on phones through the Power Apps app,
+and adds lesson registers. See <a href="power-apps-staff-app.html">POWER-APPS-STAFF-APP.md</a>.</li>
+</ul>
+<h2 id="what-changed-since-you-last-looked">What changed since you last looked</h2><p>The first time someone opens the Viewer, it notes their timetable and their published days. Each
+time after that, it compares the copy with what they saw last. It lists what is different, with what
+it was, and marks it on the day. <strong>Got it</strong> clears the list. This is kept only on their own device.</p>
+<h2 id="privacy">Privacy</h2><p>The Viewer keeps two things in the browser on the person&#39;s device: who they are, and what they last
+saw. Nothing is sent anywhere. Its security policy lets it reach nothing but its own web site (to
+load <code>timetable-published.json</code>). Staff names and timetables are still personal data. Put the
+Viewer where only staff can reach it, and record it in your data protection records
+(<a href="data-protection.html">DATA-PROTECTION.md</a>).</p>
+<h2 id="looks">Looks</h2><p>The Viewer matches the Builder:</p>
+<ul>
+<li><strong>Appearance:</strong> Automatic, Light, Dark or High contrast</li>
+<li><strong>Look:</strong> Classic or Future</li>
+<li>the school&#39;s colour and logo</li>
+</ul>
+<p>Each person chooses their look in <strong>Display and settings</strong> (the button at the top right), which also
+has:</p>
+<ul>
+<li><strong>Text size:</strong> Standard, Large or Largest</li>
+<li><strong>Font:</strong> Standard or Easier to read (a clear font already on the device, with more space between
+letters and lines; nothing is downloaded)</li>
+</ul>
+<p>Their choices are remembered on their device.</p>
+<p><strong>A personal link.</strong> When the Viewer is on the school&#39;s website, SharePoint or another web address,
+adding <code>#me=</code> and a person&#39;s staff code to the end of its address opens it straight on that person, for
+example <code>…/Timetable-Viewer.html#me=BHA</code>. Each person can also copy their own link from <strong>Display and
+settings</strong>, <strong>Copy my link</strong>, and bookmark it or add it to their home screen. A link only chooses among
+the people already in the Viewer; it does not show anything extra. In the day and week lists, cover is
+marked with a <strong>Cover</strong> label and a bar down the side, not by colour alone. Buttons are at least 48 pixels, so they are easy to tap.</p>
+<h2 id="student-timetables-optional">Student timetables (optional)</h2><p>Tick <strong>Student timetables</strong> in <strong>Setup, Staff viewer</strong> to add a <strong>Students</strong> tab to the Viewer. Staff type part
+of a pupil&#39;s name and see that pupil&#39;s week: each lesson with its group, room and staff.</p>
+<ul>
+<li>It is <strong>off unless you tick it</strong>. Ticked, the staff copy holds every timetabled pupil&#39;s name, year and
+tutor group, and which lessons they are in. It never holds dates of birth, pupil numbers, notes or
+reasons for absence.</li>
+<li>Anyone who can open the Viewer can look up any pupil, so keep it where only staff can open it (the
+Power Apps staff app, a staff-only SharePoint library or Teams channel). Agree it with your data
+protection lead and add it to your records of processing.</li>
+<li>The Viewer does not remember which pupil was looked up.</li>
+</ul>
+<h2 id="visual-timetables-and-what-each-lesson-shows">Visual timetables and what each lesson shows</h2><ul>
+<li>On <strong>Students</strong> and <strong>Groups</strong>, choose <strong>Timetable</strong>, <strong>Visual week</strong> or <strong>Visual day</strong>. The visual
+timetables use the subject symbols set in the Builder (Setup, Subjects), or the built-in Mulberry
+symbols. <strong>Print</strong> prints the one on screen.</li>
+<li><strong>Show</strong> ticks (Adults, Students, Rooms, Groups) choose what appears on each lesson, down to just the
+subject. Each person&#39;s choice is remembered on their own device.</li>
+</ul>
+</article></div></main>
+<footer><div class="wrap"><span>Timetable Builder 3.3 (preview 9), November 2026.</span><a href="../">Back to the home page</a></div></footer></body></html>
